@@ -4,6 +4,7 @@ Contributors:
 
 Pavit Bagga
 
+Ethan Joerz
+
 Keeley Bond
 
-Ethan Joerz
