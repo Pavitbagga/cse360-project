@@ -4,8 +4,8 @@ Contributors:
 
 Pavit Bagga
 
-Ethan Joerz
-
 Keeley Bond
+
+Ethan Joerz
 
 Katy Vanderwolde
