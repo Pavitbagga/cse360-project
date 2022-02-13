@@ -2,8 +2,8 @@
 
 Contributors: 
 
-Ethan Joerz
-
 Pavit Bagga
 
 Keeley Bond
+
+Ethan Joerz
