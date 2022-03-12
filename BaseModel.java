@@ -1,5 +1,3 @@
-package org.openjfx;
-
 import java.util.ArrayList;
 
 import javafx.geometry.Pos;

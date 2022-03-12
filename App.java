@@ -1,5 +1,3 @@
-package org.openjfx;
-
 import javafx.event.EventHandler;
 import java.io.FileInputStream;
 import java.io.InputStream;
