@@ -1,7 +1,7 @@
 package application;
 import java.lang.*;
 import java.util.*;
-
+ 
 
 public class Coupon 
 {
