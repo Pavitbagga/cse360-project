@@ -10,9 +10,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-public class EditItemView extends Scene {
+import java.util.ArrayList;
+
+public class EditItemView extends BaseModel {
 
     Button addNewItemButton;
     Button editExistingItemButton;
@@ -48,22 +49,15 @@ public class EditItemView extends Scene {
 
     VBox rightVBox;
 
-    HBox contentHBox;
+    HBox wholeView;
 
-    VBox buttonsVBox;
-
-    HBox topHBox;
-
-    ImageView topLogoView;
-
-    VBox wholeView;
-
-    public EditItemView(Stage stage, int xSize, int ySize, Button[] topButtons, String newPageTitle, Image newLogo) {
+    public EditItemView(int xSize, int ySize, ArrayList<Button> buttonList, String newPageTitle, Image newLogo) {
 
         super(new GridPane(),xSize,ySize,Color.web("FFFFFF"));
 
-        wholeView = (VBox) super.getRoot();
+        wholeView = (HBox) super.getRoot();
 
+        //elements of the scene
         addNewItemButton = new Button();
         editExistingItemButton = new Button();
         searchGoButton = new Button();
@@ -84,6 +78,7 @@ public class EditItemView extends Scene {
         prepTimeText = new Text();
         prepTimeTextField = new TextField();
 
+        //hboxes on the left
         addEditButtonsHBox = new HBox();
         searchGoHBox = new HBox();
         radioButtonsHBox = new HBox();
@@ -91,25 +86,21 @@ public class EditItemView extends Scene {
         ingredientsListHBox = new HBox();
         foodTagsListHbox = new HBox();
 
+        //hboxes for the left
         priceHBox = new HBox();
         prepTimeHBox = new HBox();
 
         leftVBox = new VBox();
         rightVBox = new VBox();
 
-        contentHBox = new HBox();
-
-        buttonsVBox = new VBox();
-        topHBox = new HBox();
-
-        topLogoView = new ImageView();
-
+        //set text for labels
         foodItemNameText.setText("Food Item Name: ");
         ingredientListText.setText("Ingredients List: ");
         foodTagsText.setText("Food Tags List: ");
         priceText.setText("Price: ");
         prepTimeText.setText("Prep Time: ");
 
+        //add to the left hboxes
         addEditButtonsHBox.getChildren().addAll(addNewItemButton,editExistingItemButton);
         searchGoHBox.getChildren().addAll(searchBar,searchGoButton);
         radioButtonsHBox.getChildren().addAll(cakeRadioButton,iceCreamRadioButton,smoothieRadioButton);
@@ -117,43 +108,18 @@ public class EditItemView extends Scene {
         ingredientsListHBox.getChildren().addAll(ingredientListText,ingredientListTextField);
         foodTagsListHbox.getChildren().addAll(foodTagsText,foodTagsTextField);
 
+        //add all of the left hboxes to the left vbox
         leftVBox.getChildren().addAll(addEditButtonsHBox,searchGoHBox,radioButtonsHBox,foodItemNameHBox,ingredientsListHBox,foodTagsListHbox);
 
+        //add to the right hboxes
         priceHBox.getChildren().addAll(priceText,newPriceTextField);
         prepTimeHBox.getChildren().addAll(prepTimeText,prepTimeTextField);
 
+        //add the right hboxes to the right vbox
         rightVBox.getChildren().addAll(priceHBox,prepTimeHBox,createItemButton);
 
-        contentHBox.getChildren().addAll(leftVBox,rightVBox);
-
-        for (Button b : topButtons) {
-            buttonsVBox.getChildren().add(b);
-        }
-
-        topLogoView.setImage(newLogo);
-        topHBox.getChildren().addAll(topLogoView,buttonsVBox);
-
-        wholeView.getChildren().addAll(topHBox,contentHBox);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        //add both vboxes to the scene?
+        wholeView.getChildren().addAll(leftVBox,rightVBox);
 
     }
 }
