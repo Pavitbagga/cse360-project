@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,8 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import java.util.ArrayList;
+import javafx.stage.Stage;
 
 public class EditItemView extends BaseModel {
 
@@ -49,16 +51,23 @@ public class EditItemView extends BaseModel {
 
     VBox rightVBox;
 
-    HBox wholeView;
+    HBox contentHBox;
 
-    public EditItemView(int xSize, int ySize, ArrayList<Button> buttonList, String newPageTitle, Image newLogo) {
+    VBox buttonsVBox;
 
-        super(new GridPane(),xSize,ySize,Color.web("FFFFFF"));
+    HBox topHBox;
 
-        wholeView = (HBox) super.getRoot();
+    ImageView topLogoView;
 
-        //elements of the scene
-        addNewItemButton = new Button();
+    VBox wholeView;
+
+    public EditItemView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
+
+        super(xSize, ySize, topButtons, newPageTitle, newLogo);
+
+        wholeView = new VBox();
+
+        addNewItemButton = new Button("Add new");
         editExistingItemButton = new Button();
         searchGoButton = new Button();
         createItemButton = new Button();
@@ -78,7 +87,6 @@ public class EditItemView extends BaseModel {
         prepTimeText = new Text();
         prepTimeTextField = new TextField();
 
-        //hboxes on the left
         addEditButtonsHBox = new HBox();
         searchGoHBox = new HBox();
         radioButtonsHBox = new HBox();
@@ -86,21 +94,25 @@ public class EditItemView extends BaseModel {
         ingredientsListHBox = new HBox();
         foodTagsListHbox = new HBox();
 
-        //hboxes for the left
         priceHBox = new HBox();
         prepTimeHBox = new HBox();
 
         leftVBox = new VBox();
         rightVBox = new VBox();
 
-        //set text for labels
+        contentHBox = new HBox();
+
+        buttonsVBox = new VBox();
+        topHBox = new HBox();
+
+        topLogoView = new ImageView();
+
         foodItemNameText.setText("Food Item Name: ");
         ingredientListText.setText("Ingredients List: ");
         foodTagsText.setText("Food Tags List: ");
         priceText.setText("Price: ");
         prepTimeText.setText("Prep Time: ");
 
-        //add to the left hboxes
         addEditButtonsHBox.getChildren().addAll(addNewItemButton,editExistingItemButton);
         searchGoHBox.getChildren().addAll(searchBar,searchGoButton);
         radioButtonsHBox.getChildren().addAll(cakeRadioButton,iceCreamRadioButton,smoothieRadioButton);
@@ -108,18 +120,38 @@ public class EditItemView extends BaseModel {
         ingredientsListHBox.getChildren().addAll(ingredientListText,ingredientListTextField);
         foodTagsListHbox.getChildren().addAll(foodTagsText,foodTagsTextField);
 
-        //add all of the left hboxes to the left vbox
         leftVBox.getChildren().addAll(addEditButtonsHBox,searchGoHBox,radioButtonsHBox,foodItemNameHBox,ingredientsListHBox,foodTagsListHbox);
 
-        //add to the right hboxes
         priceHBox.getChildren().addAll(priceText,newPriceTextField);
         prepTimeHBox.getChildren().addAll(prepTimeText,prepTimeTextField);
 
-        //add the right hboxes to the right vbox
         rightVBox.getChildren().addAll(priceHBox,prepTimeHBox,createItemButton);
 
-        //add both vboxes to the scene?
-        wholeView.getChildren().addAll(leftVBox,rightVBox);
+        contentHBox.getChildren().addAll(leftVBox,rightVBox);
+
+        wholeView.getChildren().addAll(topHBox,contentHBox);
+
+        this.mainView.add(wholeView, 0, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }
