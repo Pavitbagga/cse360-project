@@ -2,18 +2,14 @@
 import java.util.ArrayList;
 
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class EditItemView extends BaseModel {
 
@@ -37,6 +33,8 @@ public class EditItemView extends BaseModel {
     Text prepTimeText;
     TextField prepTimeTextField;
 
+    ToggleGroup radioToggle;
+
     HBox addEditButtonsHBox;
     HBox searchGoHBox;
     HBox radioButtonsHBox;
@@ -55,10 +53,6 @@ public class EditItemView extends BaseModel {
 
     VBox buttonsVBox;
 
-    HBox topHBox;
-
-    ImageView topLogoView;
-
     VBox wholeView;
 
     public EditItemView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
@@ -67,15 +61,15 @@ public class EditItemView extends BaseModel {
 
         wholeView = new VBox();
 
-        addNewItemButton = new Button("Add new");
-        editExistingItemButton = new Button();
-        searchGoButton = new Button();
-        createItemButton = new Button();
+        addNewItemButton = new Button("Add new item");
+        editExistingItemButton = new Button("Edit existing item");
+        searchGoButton = new Button("Go");
+        createItemButton = new Button("Create item");
         searchBar = new TextField();
         categoryGroup = new Group();
-        cakeRadioButton = new RadioButton();
-        smoothieRadioButton = new RadioButton();
-        iceCreamRadioButton = new RadioButton();
+        cakeRadioButton = new RadioButton("Cake");
+        smoothieRadioButton = new RadioButton("Smoothie");
+        iceCreamRadioButton = new RadioButton("Ice cream");
         foodItemNameText = new Text();
         foodItemNewName = new TextField();
         ingredientListText = new Text();
@@ -86,6 +80,8 @@ public class EditItemView extends BaseModel {
         newPriceTextField = new TextField();
         prepTimeText = new Text();
         prepTimeTextField = new TextField();
+
+        radioToggle = new ToggleGroup();
 
         addEditButtonsHBox = new HBox();
         searchGoHBox = new HBox();
@@ -103,9 +99,6 @@ public class EditItemView extends BaseModel {
         contentHBox = new HBox();
 
         buttonsVBox = new VBox();
-        topHBox = new HBox();
-
-        topLogoView = new ImageView();
 
         foodItemNameText.setText("Food Item Name: ");
         ingredientListText.setText("Ingredients List: ");
@@ -120,6 +113,10 @@ public class EditItemView extends BaseModel {
         ingredientsListHBox.getChildren().addAll(ingredientListText,ingredientListTextField);
         foodTagsListHbox.getChildren().addAll(foodTagsText,foodTagsTextField);
 
+        cakeRadioButton.setToggleGroup(radioToggle);
+        smoothieRadioButton.setToggleGroup(radioToggle);
+        iceCreamRadioButton.setToggleGroup(radioToggle);
+
         leftVBox.getChildren().addAll(addEditButtonsHBox,searchGoHBox,radioButtonsHBox,foodItemNameHBox,ingredientsListHBox,foodTagsListHbox);
 
         priceHBox.getChildren().addAll(priceText,newPriceTextField);
@@ -129,28 +126,9 @@ public class EditItemView extends BaseModel {
 
         contentHBox.getChildren().addAll(leftVBox,rightVBox);
 
-        wholeView.getChildren().addAll(topHBox,contentHBox);
+        wholeView.getChildren().addAll(contentHBox);
 
         this.mainView.add(wholeView, 0, 1);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
