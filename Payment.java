@@ -1,7 +1,4 @@
-//notes:
-//should we change the constructor so u can't add anything using the constructor?
-//then we don't have to add checks, we'll just call each setter
-//individually.
+
 
 public class Payment {
 
