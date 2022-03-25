@@ -1,7 +1,7 @@
 package application;
 import java.lang.*;
 import java.util.*;
- 
+
 
 public class Coupon 
 {
@@ -12,9 +12,9 @@ public class Coupon
 	
 public Coupon(int newPercentOff, String newExpiration, String newCode)
 {
-	newPercentOff = 0;
-	newExpiration = "xx/xx/2022";
-	newCode = "xxx-xxx-xxxx";
+	this.percentOff = newPercentOff;
+	this.expiration = newExpiration;
+	this.code = newCode;
 }
 	
 public boolean setPercentOff(int newPercentOff)
