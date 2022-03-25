@@ -5,7 +5,7 @@ public class Restaurant extends User{
     public Restaurant(String newFirstName, String newLastName, String newUsername, String newPassword, int newUserID, String newRestaurantName, int newPermissions) {
         this.firstName = newFirstName;
         this.lastName = newLastName;
-        this.username = newUsername;
+        this.userName = newUsername;
         this.password = newPassword;
         this.userId = newUserID;
         this.restaurantName = newRestaurantName;
