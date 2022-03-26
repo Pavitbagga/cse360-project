@@ -4,7 +4,7 @@
 
 public class User {
 	
-	protected String firstName; // protected or private?
+	protected String firstName; 
 	protected String lastName;
 	protected String userName;
 	protected String password;
