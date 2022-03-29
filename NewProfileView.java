@@ -12,14 +12,13 @@ import javafx.scene.layout.HBoz;
 import javafx.scene.text.Text;
 
 
-public class NewProfileView{
+public class NewProfileView extends BaseModel{
 
 	Text titleText;
 	Text firstNameText;
 	Text lastNameText;
 	Text emailText;
 	Text phoneNumberText;
-	// Text addressText;
 	Text paymentInfoText;
 	Text addressLine1Text;
 	Text addressLine2Text;
@@ -35,8 +34,6 @@ public class NewProfileView{
 	TextField lastNameTextField;
 	TextField emailTextField;
 	TextField phoneNumberTextField;
-// TextField addressTextField;
-	//TextField paymentInfoTextField;
 	TextField addressLine1TextField;
 	TextField addressLine2TextField;
 	TextField zipCodeTextField;
@@ -50,17 +47,9 @@ public class NewProfileView{
 	Button createAccountButton;
 	
 	VBox wholeView;
-	//VBox buttonsVBox; // logout, go to menu, go to profile, etc
-	ImageView topLogoView;
-	
-	VBox leftTopVBox;
-	VBox middleTopVBox;
-	//VBox rightTopVBox; 
-	
+
 	VBox leftMiddleVBox;
 	VBox rightMiddleVBox;
-	
-	//VBox leftBottomVBox;
 	VBox rightBottomVBox;
 	
 	HBox topHBox;
@@ -71,22 +60,14 @@ public class NewProfileView{
 	
 
 	public NewProfileView(int xSize, int ySize, ButtonList<Button> topButtons, String newPageTitle, Image newLogo) {
-		super(xSize, ySize, topButtons, newLogo);  
+		super(xSize, ySize, topButtons, newPageTitle, newLogo);  
 		
 		// Whole Login Page
 		wholeView = new VBox();
-		
-		
-		// Initialize Logo Image 
-		topLogoView = new ImageView();
+
 		
 		profile = new ScrollPane();
 		
-		
-		// Initialize VBoxes
-		leftTopVBox = new VBox();
-		middleTopVBox = new VBox();
-		rightTopVBox = new VBox(); 
 		
 		
 		leftMiddleVBox = new VBox();
@@ -133,7 +114,7 @@ public class NewProfileView{
 		addressLine1TextField = new TextField();
 		addressLine2TextField = new TextField();
 		zipCodeTextField = new TextField();
-		aptNumPOBoxTextField = new TextField(); 
+		aptNumPoBoxTextField = new TextField(); 
 		cityTextField = new TextField();
 		stateTextField = new TextField();
 		
@@ -143,21 +124,8 @@ public class NewProfileView{
 		
 		
 		// Initialized Buttons
-		saveButton = new Button("Save");
-		editButton = new Button("Edit");
-		
-		// Set Page Title
-		titleText.setText("CREATE ACCOUNT");
-		
-		// Set image
-		topLogoView.setImage(newLogo);
-		
-		
+		createAccountButton = new Buttons ("CREATE ACCOUNT");
 
-		// Add functionalities to certain VBoxes
-		leftTopVBox.getChildren.addAll(titleText);
-		middleTopVBox.getChildren.addAll(topLogoView);
-		//rightTopVBox.getChildren.addAll(buttonsVBox);
 		
 		// Labels
 		leftMiddleVBox.getChildren.addAll(firstNameText, lastNameText, emailText, phoneNumberText, 
@@ -165,14 +133,13 @@ public class NewProfileView{
 				cardNumText, cardExpDateText, securityNumText);
 		//Inputs
 		rightMiddleVBox.getChildren.addAll(firstNameTextField, lastNameTextField, emailTextField, phoneNumberTextField, 
-				addressLine1TextField, addressLine2TextField, zipCodeTextField, aptNumPOBoxTextField, 
+				addressLine1TextField, addressLine2TextField, zipCodeTextField, aptNumPoBoxTextField, 
 				cityTextField, stateTextField, cardNumTextField, cardExpDateTextField, securityNumTextField);
 		
 		// Bottom button
-		rightBottomVBox.getChildren.addAll(saveButton);
+		rightBottomVBox.getChildren.addAll(createAccountButton);
 		
 		// Add VBoxes to HBoxes
-		topHBox.getChildren.addAll(leftTopVBox, middleTopVBox); //might add rightTopVBox
 		middleHBox.getChildren.addAll(leftMiddleVBox, rightMiddleVBox);
 		bottomHBox.getChildren.addAll(rightBottomVBox);
 		
@@ -184,15 +151,17 @@ public class NewProfileView{
 		
 		this.mainView.add(wholeView, 0, 1);
 		
-		public void addAllFieldsToProfile(User newUser) {
-			profile.setContent(rightMiddleVBox);
-		}
+
+	}
+	
+	public void addAllFieldsToProfile(User newUser) {
+		profile.setContent(rightMiddleVBox);
+	}
+	
+	public void removeAllFromNewProfile() {
+		rightMiddleVBox.getChildren().clear(); //unsure ?
+		profile.setContent(rightMiddleVBox);
 		
-		public void removeAllFromNewProfile() {
-			rightMiddleVBox.getChildren().clear(); //unsure ?
-			profile.setContent(rightMiddleVBox);
-			
-		}
 	}
 
 
