@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -83,22 +84,34 @@ public class EditItemView extends BaseModel {
 
         radioToggle = new ToggleGroup();
 
-        addEditButtonsHBox = new HBox();
-        searchGoHBox = new HBox();
-        radioButtonsHBox = new HBox();
-        foodItemNameHBox = new HBox();
-        ingredientsListHBox = new HBox();
-        foodTagsListHbox = new HBox();
+        addEditButtonsHBox = new HBox(20);
+        addEditButtonsHBox.setAlignment(Pos.CENTER);
+        searchGoHBox = new HBox(20);
+        searchGoHBox.setAlignment(Pos.CENTER);
+        radioButtonsHBox = new HBox(20);
+        radioButtonsHBox.setAlignment(Pos.CENTER);
+        foodItemNameHBox = new HBox(20);
+        foodItemNameHBox.setAlignment(Pos.CENTER);
+        ingredientsListHBox = new HBox(20);
+        ingredientsListHBox.setAlignment(Pos.CENTER);
+        foodTagsListHbox = new HBox(20);
+        foodTagsListHbox.setAlignment(Pos.CENTER);
 
-        priceHBox = new HBox();
-        prepTimeHBox = new HBox();
+        priceHBox = new HBox(20);
+        priceHBox.setAlignment(Pos.CENTER);
+        prepTimeHBox = new HBox(20);
+        prepTimeHBox.setAlignment(Pos.CENTER);
 
-        leftVBox = new VBox();
-        rightVBox = new VBox();
+        leftVBox = new VBox(20);
+        leftVBox.setAlignment(Pos.CENTER);
+        rightVBox = new VBox(20);
+        rightVBox.setAlignment(Pos.CENTER);
 
-        contentHBox = new HBox();
+        contentHBox = new HBox(20);
+        contentHBox.setAlignment(Pos.CENTER);
 
-        buttonsVBox = new VBox();
+        buttonsVBox = new VBox(20);
+        buttonsVBox.setAlignment(Pos.CENTER);
 
         foodItemNameText.setText("Food Item Name: ");
         ingredientListText.setText("Ingredients List: ");
