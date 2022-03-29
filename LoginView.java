@@ -10,7 +10,7 @@ import javafx.scene.layout.HBoz;
 import javafx.scene.text.Text;
 
 
-public class LoginView {
+public class LoginView extends BaseModel{
 
 	Text userNameText;
 	Text passwordText;
@@ -31,7 +31,7 @@ public class LoginView {
 	
 	
 	public LoginView(int xSize, int ySize, ButtonList<Button> topButtons, String newPageTitle, String newLogo, Image newLogo) {
-		super(xSize, ySize, topButtons, newLogo); 
+		super(xSize, ySize, topButtons, newPageTitle, newLogo); 
 		
 		// Whole Login Page
 		wholeView = new VBox();
