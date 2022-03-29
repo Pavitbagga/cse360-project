@@ -21,10 +21,10 @@ public class MenuItemView extends BaseModel{
     Button addToCart = new Button("ADD TO CART");
     Button plus = new Button("+");
     Button minus = new Button("-");
-    Text quantity = new Text("                ");
-    Text amount = new Text("$   ");
-    Text ingredients = new Text("Ingredients include:");
-    Text foodName = new Text("Food Item Name: ");
+    Text quantity;
+    Text amount;
+    Text ingredients;
+    Text foodName;
     ImageView food;
     Image foodItem;
     HBox addSubBox = new HBox();
@@ -34,10 +34,19 @@ public class MenuItemView extends BaseModel{
 
         super(xSize, ySize, topButtons, newPageTitle, newLogo);
         contentView = new GridPane();
+        foodName = new Text("Food Item Name: " + newMenuItem.getName());
+        amount = new Text("$   " + newMenuItem.getPrice());
+        quantity = new Text("     1     ");
+        ingredients = new Text();
+        String s = "Ingredients: ";
+        for (int i = 0; i < newMenuItem.getIngredients().size(); i++){
+            s += newMenuItem.getIngredients().get(i) + " \n";
+        }
+        ingredients.setText(s);
 
-       // amount.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        //foodName.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        //ingredients.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        amount.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        foodName.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        ingredients.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
@@ -78,7 +87,7 @@ public class MenuItemView extends BaseModel{
         contentView.getColumnConstraints().addAll(columns);
 
         sizing.getChildren().addAll(regular,medium,large);
-/*
+
         try{
             InputStream in = new FileInputStream(newMenuItem.getPicture().getUrl());
             foodItem = new Image(in);
@@ -93,7 +102,7 @@ public class MenuItemView extends BaseModel{
             System.out.println("image not found");
             System.out.print(E.toString());
         }
-*/
+
 
         contentView.add(foodName, 0, 0);
         contentView.add(ingredients,1,1);
@@ -103,7 +112,7 @@ public class MenuItemView extends BaseModel{
         contentView.add(addSubBox,2,2);
         contentView.add(sizing,2,1);
         contentView.add(addToCart,2,4);
-        contentView.setGridLinesVisible(true);
+        //contentView.setGridLinesVisible(true);
 
         contentView.setHgap(5);
         contentView.setVgap(5);
@@ -112,4 +121,3 @@ public class MenuItemView extends BaseModel{
         this.mainView.add(contentView, 0, 1);
     }
 }
-
