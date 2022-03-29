@@ -9,11 +9,7 @@ public class Customer extends User {
     ArrayList<Coupon> couponList = new ArrayList<>();
 
     public Customer(String newFirstName, String newLastName, String newUsername, String newPassword, int newUserID, String newEmail, String newPhoneNum) {
-        this.firstName = newFirstName;
-        this.lastName = newLastName;
-        this.userName = newUsername;
-        this.password = newPassword;
-        this.userId = newUserID;
+        super(newFirstName,newLastName,newUsername,newPassword,newUserID);
         this.email = newEmail;
         this.phoneNum = newPhoneNum;
     }
@@ -63,3 +59,4 @@ public class Customer extends User {
         return couponList;
     }
 }
+
