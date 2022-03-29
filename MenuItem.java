@@ -23,7 +23,7 @@ class MenuItem{
         pic.setAlternativeText(description);
     }
     public Boolean setPictureURL (String newURL){
-        return pic.setURL(newURL);
+        return pic.setUrl(newURL);
     }
     public Boolean setPrice(Integer newPrice){
         if(newPrice > 0){
