@@ -11,14 +11,13 @@ import javafx.scene.layout.HBoz;
 import javafx.scene.text.Text;
 
 
-public class ProfileView{
+public class ProfileView extends BaseModel{
 
 	Text titleText;
 	Text firstNameText;
 	Text lastNameText;
 	Text emailText;
 	Text phoneNumberText;
-	// Text addressText;
 	Text paymentInfoText;
 	Text addressLine1Text;
 	Text addressLine2Text;
@@ -34,8 +33,6 @@ public class ProfileView{
 	TextField lastNameTextField;
 	TextField emailTextField;
 	TextField phoneNumberTextField;
-// TextField addressTextField;
-	//TextField paymentInfoTextField;
 	TextField addressLine1TextField;
 	TextField addressLine2TextField;
 	TextField zipCodeTextField;
@@ -50,12 +47,7 @@ public class ProfileView{
 	Button editButton;
 	
 	VBox wholeView;
-	//VBox buttonsVBox; // logout, go to menu, go to profile, etc
-	ImageView topLogoView;
-	
-	VBox leftTopVBox;
-	VBox middleTopVBox;
-	//VBox rightTopVBox; 
+
 	
 	VBox leftMiddleVBox;
 	VBox rightMiddleVBox;
@@ -71,7 +63,7 @@ public class ProfileView{
 	
 
 	public ProfileView(int xSize, int ySize, ButtonList<Button> topButtons, String newPageTitle, Image newLogo) {
-		super(xSize, ySize, topButtons, newLogo);  
+		super(xSize, ySize, topButtons, newPageTitle, newLogo);  
 		
 		// Whole Login Page
 		wholeView = new VBox();
@@ -82,11 +74,6 @@ public class ProfileView{
 		
 		profile = new ScrollPane();
 		
-		
-		// Initialize VBoxes
-		leftTopVBox = new VBox();
-		middleTopVBox = new VBox();
-		rightTopVBox = new VBox(); 
 		
 		
 		leftMiddleVBox = new VBox();
@@ -133,7 +120,7 @@ public class ProfileView{
 		addressLine1TextField = new TextField();
 		addressLine2TextField = new TextField();
 		zipCodeTextField = new TextField();
-		aptNumPOBoxTextField = new TextField(); 
+		aptNumPoBoxTextField = new TextField(); 
 		cityTextField = new TextField();
 		stateTextField = new TextField();
 		
@@ -145,19 +132,7 @@ public class ProfileView{
 		// Initialized Buttons
 		saveButton = new Button("Save");
 		editButton = new Button("Edit");
-		
-		// Set Page Title
-		titleText.setText("PROFILE");
-		
-		// Set image
-		topLogoView.setImage(newLogo);
-		
-		
 
-		// Add functionalities to certain VBoxes
-		leftTopVBox.getChildren.addAll(titleText);
-		middleTopVBox.getChildren.addAll(topLogoView);
-		//rightTopVBox.getChildren.addAll(buttonsVBox);
 		
 		// Labels
 		leftMiddleVBox.getChildren.addAll(firstNameText, lastNameText, emailText, phoneNumberText, 
@@ -173,7 +148,6 @@ public class ProfileView{
 		rightBottomVBox.getChildren.addAll(saveButton);
 		
 		// Add VBoxes to HBoxes
-		topHBox.getChildren.addAll(leftTopVBox, middleTopVBox); //might add rightTopVBox
 		middleHBox.getChildren.addAll(leftMiddleVBox, rightMiddleVBox);
 		bottomHBox.getChildren.addAll(leftBottomVBox, rightBottomVBox);
 		
@@ -185,15 +159,17 @@ public class ProfileView{
 		
 		this.mainView.add(wholeView, 0, 1);
 		
-		public void addAllFieldsToProfile(User newUser) {
-			profile.setContent(rightMiddleVBox);
-		}
+
+	}
+	
+	public void addAllFieldsToProfile(User newUser) {
+		profile.setContent(rightMiddleVBox);
+	}
+	
+	public void removeAllFromProfile() {
+		rightMiddleVBox.getChildren().clear(); //unsure ?
+		profile.setContent(rightMiddleVBox);
 		
-		public void removeAllFromProfile() {
-			rightMiddleVBox.getChildren().clear(); //unsure ?
-			profile.setContent(rightMiddleVBox);
-			
-		}
 	}
 
 
