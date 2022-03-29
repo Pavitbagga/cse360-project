@@ -1,10 +1,5 @@
 import java.util.*;
 
-//notes:
-//OrderItem size - what is that? why is it an integer?
-//Order orderTime - consider adding orderItemTime to the orderItem class. (prepTime * quantity)
-//Order getCustomer - what is customer?
-
 public class Order {
     private int orderNum;
     private Customer orderer;
