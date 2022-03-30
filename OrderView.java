@@ -1,3 +1,5 @@
+package org.openjfx;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;

@@ -2,17 +2,14 @@
 // Last Modified 3/28/22
 // ProfileView shows user their account information, such as name, location, contact, and payment.
 // Also, it allows them to edit that information.
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
+package org.openjfx;
+
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -20,8 +17,11 @@ import java.util.ArrayList;
 
 public class ProfileView extends BaseModel{
 
+	Text titleText;
 	Text firstNameText;
 	Text lastNameText;
+	Text userNameText;
+	Text passwordText;
 	Text emailText;
 	Text phoneNumberText;
 	Text addressLine1Text;
@@ -36,6 +36,8 @@ public class ProfileView extends BaseModel{
 
 	TextField firstNameTextField;
 	TextField lastNameTextField;
+	TextField userNameTextField;
+	TextField passwordTextField;
 	TextField emailTextField;
 	TextField phoneNumberTextField;
 	TextField addressLine1TextField;
@@ -48,152 +50,292 @@ public class ProfileView extends BaseModel{
 	TextField cardExpDateTextField;
 	TextField securityNumTextField;
 
-	Button saveButton;
-	Button editButton;
-	
-	VBox wholeView;
+	ColumnConstraints c1;
+	ColumnConstraints c2;
 
-	
-	VBox leftMiddleVBox;
-	VBox rightMiddleVBox;
-	
-	VBox leftBottomVBox;
-	VBox rightBottomVBox;
-	
-	HBox topHBox;
-	HBox middleHBox;
-	HBox bottomHBox;
-	
-	ScrollPane profile;
-	
+	RowConstraints r1;
+	RowConstraints r2;
+	RowConstraints r3;
+	RowConstraints r4;
+	RowConstraints r5;
+	RowConstraints r6;
+	RowConstraints r7;
+	RowConstraints r8;
+	RowConstraints r9;
+	RowConstraints r10;
+	RowConstraints r11;
+	RowConstraints r12;
+	RowConstraints r13;
+	RowConstraints r14;
+	RowConstraints r15;
+	RowConstraints r16;
+	RowConstraints r17;
+
+	Button editAccountInfo;
+	Button saveChanges;
+
+	GridPane grid;
+
 
 	public ProfileView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
-		super(xSize, ySize, topButtons, newPageTitle, newLogo);  
-		
-		// Whole Login Page
-		wholeView = new VBox();
+		super(xSize, ySize, topButtons, newPageTitle, newLogo);
 
-		profile = new ScrollPane();
-		
-		
-		
-		leftMiddleVBox = new VBox(14.4);
-		rightMiddleVBox = new VBox(5);
 
-		
-		leftBottomVBox = new VBox();
-		rightBottomVBox = new VBox();
-		
-		// Initialize HBoxes
-		topHBox = new HBox();
-		middleHBox = new HBox();
-		bottomHBox = new HBox();
-		
-		
-		
+		grid = new GridPane();
+
 		// Initialized Text
 		firstNameText = new Text("First Name: ");
-		firstNameText.setFont(new Font(18));
 		lastNameText = new Text("Last Name: ");
-		lastNameText.setFont(new Font(18));
-		
-		emailText = new Text("Email ID: ");
-		emailText.setFont(new Font(18));
-		phoneNumberText = new Text("Phone Number: ");
-		phoneNumberText.setFont(new Font(18));
 
-		addressLine1Text = new Text("Primary Address: ");
-		addressLine1Text.setFont(new Font(18));
-		addressLine2Text = new Text("Secondary Address: ");
-		addressLine2Text.setFont(new Font(18));
+		userNameText = new Text("Username: ");
+		passwordText = new Text("Password: ");
+
+		emailText = new Text("Email ID: ");
+		phoneNumberText = new Text("Phone Number: ");
+
+
+		addressLine1Text = new Text("Address Line 1: ");
+		addressLine2Text = new Text("Address Line 2: ");
 		zipCodeText = new Text("ZipCode: ");
-		zipCodeText.setFont(new Font(18));
 		aptNumPOBoxText = new Text("Apt PO Box Number: ");
-		aptNumPOBoxText.setFont(new Font(18));
 		cityText = new Text("City: ");
-		cityText.setFont(new Font(18));
 		stateText = new Text("State: ");
-		stateText.setFont(new Font(18));
-		
+
 		cardNumText = new Text("Card Number: ");
-		cardNumText.setFont(new Font(18));
 		cardExpDateText = new Text("Card Expiration Date: ");
-		cardExpDateText.setFont(new Font(18));
 		securityNumText = new Text("Security Number (CCV): ");
-		securityNumText.setFont(new Font(18));
 
 		// Initialized TextFields
 		firstNameTextField = new TextField();
 		lastNameTextField = new TextField();
-		
+
+		userNameTextField = new TextField();
+		passwordTextField = new TextField();
+
+
 		emailTextField = new TextField();
 		phoneNumberTextField = new TextField();
-		
-		
+
+
 		addressLine1TextField = new TextField();
 		addressLine2TextField = new TextField();
 		zipCodeTextField = new TextField();
-		aptNumPoBoxTextField = new TextField(); 
+		aptNumPoBoxTextField = new TextField();
 		cityTextField = new TextField();
 		stateTextField = new TextField();
-		
-		cardNumTextField = new TextField(); 
+		cardNumTextField = new TextField();
 		cardExpDateTextField = new TextField();
 		securityNumTextField = new TextField();
-		
-		
-		// Initialized Buttons
-		saveButton = new Button("Save");
-		editButton = new Button("Edit");
 
-		
-		// Labels
-		leftMiddleVBox.getChildren().addAll(firstNameText, lastNameText, emailText, phoneNumberText,
-				addressLine1Text, addressLine2Text, zipCodeText, aptNumPOBoxText, cityText, stateText,
-				cardNumText, cardExpDateText, securityNumText);
-		//Inputs
-		rightMiddleVBox.getChildren().addAll(firstNameTextField, lastNameTextField, emailTextField, phoneNumberTextField,
-				addressLine1TextField, addressLine2TextField, zipCodeTextField, aptNumPoBoxTextField,
-				cityTextField, stateTextField, cardNumTextField, cardExpDateTextField, securityNumTextField);
-		rightMiddleVBox.setSpacing(13);
-		rightMiddleVBox.setPadding(new Insets(14, 0, 0, 200 ));
+		editAccountInfo = new Button("Edit Account Info");
+		saveChanges = new Button("Save Changes");
 
+		System.out.println("Gets to Here 1");
 
+		c1 = new ColumnConstraints();
+		c2 = new ColumnConstraints();
+		c1.setPercentWidth(30.0);
+		c2.setPercentWidth(60.0);
 
-		// Bottom buttons
-		leftBottomVBox.getChildren().addAll(editButton);
-		leftBottomVBox.setPadding(new Insets(10,478,10,0));
-		rightBottomVBox.getChildren().addAll(saveButton);
-		rightBottomVBox.setPadding(new Insets(10,0,10,300));
-		
-		// Add VBoxes to HBoxes
-		middleHBox.getChildren().addAll(leftMiddleVBox, rightMiddleVBox);
-		middleHBox.setAlignment(Pos.BASELINE_CENTER);
-		bottomHBox.getChildren().addAll(leftBottomVBox, rightBottomVBox);
-		bottomHBox.setAlignment(Pos.BASELINE_RIGHT);
+		r1 = new RowConstraints();
+		r2 = new RowConstraints();
+		r3 = new RowConstraints();
+		r4 = new RowConstraints();
+		r5 = new RowConstraints();
+		r6 = new RowConstraints();
+		r7 = new RowConstraints();
+		r8 = new RowConstraints();
+		r9 = new RowConstraints();
+		r10 = new RowConstraints();
+		r11 = new RowConstraints();
+		r12 = new RowConstraints();
+		r13 = new RowConstraints();
+		r14 = new RowConstraints();
+		r15 = new RowConstraints();
+		r16 = new RowConstraints();
+		r17 = new RowConstraints();
 
 
-		// Add HBoxes to the whole Profile page
-		wholeView.getChildren().addAll(topHBox, middleHBox, bottomHBox);
-		
-		// Add input to ScrollPane
-		profile.setContent(rightMiddleVBox);
-		
-		this.mainView.add(wholeView, 0, 1);
-		
+		r1.setPercentHeight(5.7);
+		r2.setPercentHeight(5.7);
+		r3.setPercentHeight(5.7);
+		r4.setPercentHeight(5.7);
+		r5.setPercentHeight(5.7);
+		r6.setPercentHeight(5.7);
+		r7.setPercentHeight(5.7);
+		r8.setPercentHeight(5.7);
+		r9.setPercentHeight(5.7);
+		r10.setPercentHeight(5.7);
+		r11.setPercentHeight(5.7);
+		r12.setPercentHeight(5.7);
+		r13.setPercentHeight(5.7);
+		r14.setPercentHeight(5.7);
+		r15.setPercentHeight(5.7);
+		r16.setPercentHeight(5.7);
+		r17.setPercentHeight(5.7);
+
+
+		System.out.println("Gets to Here 1.5");
+
+		grid.getColumnConstraints().add(c1);
+		grid.getColumnConstraints().add(c2);
+
+		grid.getRowConstraints().add(r1);
+		grid.getRowConstraints().add(r2);
+		grid.getRowConstraints().add(r3);
+		grid.getRowConstraints().add(r4);
+		grid.getRowConstraints().add(r4);
+		grid.getRowConstraints().add(r5);
+		grid.getRowConstraints().add(r6);
+		grid.getRowConstraints().add(r7);
+		grid.getRowConstraints().add(r8);
+		grid.getRowConstraints().add(r9);
+		grid.getRowConstraints().add(r10);
+		grid.getRowConstraints().add(r11);
+		grid.getRowConstraints().add(r12);
+		grid.getRowConstraints().add(r13);
+		grid.getRowConstraints().add(r14);
+		grid.getRowConstraints().add(r15);
+		grid.getRowConstraints().add(r16);
+		grid.getRowConstraints().add(r17);
+
+		System.out.println("Gets to Here 2");
+
+		grid.add(firstNameText, 0, 1);
+		grid.add(lastNameText, 0, 2);
+		grid.add(userNameText, 0, 3);
+		grid.add(passwordText, 0, 4);
+		grid.add(emailText, 0, 5);
+		grid.add(phoneNumberText, 0, 6);
+		grid.add(addressLine1Text, 0, 7);
+		grid.add(addressLine2Text, 0, 8);
+		grid.add(zipCodeText, 0, 9);
+		grid.add(aptNumPOBoxText, 0, 10);
+		grid.add(cityText, 0, 11);
+		grid.add(stateText, 0, 12);
+		grid.add(cardNumText, 0, 13);
+		grid.add(cardExpDateText, 0, 14);
+		grid.add(securityNumText, 0, 15);
+		grid.add(saveChanges, 0, 16);
+
+		System.out.println("Gets to Here 3");
+
+		grid.add(firstNameTextField, 1, 1);
+		grid.add(lastNameTextField, 1, 2);
+		grid.add(userNameTextField, 1, 3);
+		grid.add(passwordTextField, 1, 4);
+		grid.add(emailTextField, 1, 5);
+		grid.add(phoneNumberTextField, 1, 6);
+		grid.add(addressLine1TextField, 1, 7);
+		grid.add(addressLine2TextField, 1, 8);
+		grid.add(zipCodeTextField, 1, 9);
+		grid.add(aptNumPoBoxTextField, 1, 10);
+		grid.add(cityTextField, 1, 11);
+		grid.add(stateTextField, 1, 12);
+		grid.add(cardNumTextField, 1, 13);
+		grid.add(cardExpDateTextField, 1, 14);
+		grid.add(securityNumTextField, 1, 15);
+		grid.add(editAccountInfo, 1, 16);
+
+
+
+		System.out.println("Gets to Here 4");
+
+
+
+
+
+		this.mainView.add(grid, 0, 1);
+
 
 	}
-	
-	public void addAllFieldsToProfile(User newUser) {
-		profile.setContent(rightMiddleVBox);
+
+	public void addAllFieldsToProfile(User newUser){
+		firstNameTextField.setText(newUser.getFirstName());
+		lastNameTextField.setText(newUser.getLastName());
+		userNameTextField.setText(newUser.getUserName());
+		passwordTextField.setText(newUser.getPassword());
+		if(newUser.getClass() == Customer.class){
+			Customer newCustomer = (Customer) newUser;
+			emailTextField.setText(newCustomer.getEmail());
+			phoneNumberTextField.setText(newCustomer.getPhoneNum());
+			addressLine1TextField.setText(newCustomer.getAddress().getStreetAddressLine1());
+			addressLine2TextField.setText(newCustomer.getAddress().getStreetAddressLine2());
+			zipCodeTextField.setText("" + newCustomer.getAddress().getZipcode());
+			aptNumPoBoxTextField.setText("" + newCustomer.getAddress().getApptNumPOBox());
+			cityTextField.setText(newCustomer.getAddress().getCity());
+			stateTextField.setText(newCustomer.getAddress().getState());
+			cardNumTextField.setText("" + newCustomer.getPaymentInfo().getCardNum());
+			cardExpDateTextField.setText(newCustomer.getPaymentInfo().getExpiration());
+			securityNumTextField.setText("" + newCustomer.getPaymentInfo().getSecurityCode());
+		}
+		if(newUser.getClass() == Restaurant.class){
+			Restaurant newRestaurant = (Restaurant) newUser;
+			emailTextField.setText(newRestaurant.getRestaurantName());
+			emailText.setText("Restaurant Name: ");
+			phoneNumberText.setText("");
+			addressLine1Text.setText("");
+			addressLine2Text.setText("");
+			zipCodeText.setText("");
+			aptNumPOBoxText.setText("");
+			cityText.setText("");
+			stateText.setText("");
+			cardNumText.setText("");
+			cardExpDateText.setText("");
+			securityNumText.setText("");
+
+			phoneNumberTextField.setVisible(false);
+            addressLine1TextField.setVisible(false);
+            addressLine2TextField.setVisible(false);
+            zipCodeTextField.setVisible(false);
+            aptNumPoBoxTextField.setVisible(false);
+            cityTextField.setVisible(false);
+            stateTextField.setVisible(false);
+            cardNumTextField.setVisible(false);
+            cardExpDateTextField.setVisible(false);
+            securityNumTextField.setVisible(false);
+
+		}
+		for(int i = 16; i < grid.getChildren().size() - 1; i++){
+			((TextField)grid.getChildren().get(i)).setEditable(false);
+		}
 	}
-	
+
+
 	public void removeAllFromProfile() {
-		rightMiddleVBox.getChildren().clear(); //unsure ?
-		profile.setContent(rightMiddleVBox);
-		
+		for(int i = 16; i < grid.getChildren().size() - 1; i++){
+			((TextField)grid.getChildren().get(i)).setText("");
+		}
+
+		firstNameText.setText("First Name: ");
+		lastNameText.setText("Last Name: ");
+		userNameText.setText("Username: ");
+		passwordText.setText("Password: ");
+		emailText.setText("Email ID: ");
+		phoneNumberText.setText("Phone Number: ");
+		addressLine1Text.setText("Address Line 1: ");
+		addressLine2Text.setText("Address Line 2: ");
+		zipCodeText.setText("ZipCode: ");
+		aptNumPOBoxText.setText("Apt PO Box Number: ");
+		cityText.setText("City: ");
+		stateText.setText("State: ");
+		cardNumText.setText("Card Number: ");
+		cardExpDateText.setText("Card Expiration Date: ");
+		securityNumText.setText("Security Number (CCV): ");
+
+		phoneNumberTextField.setVisible(true);
+        addressLine1TextField.setVisible(true);
+        addressLine2TextField.setVisible(true);
+        zipCodeTextField.setVisible(true);
+        aptNumPoBoxTextField.setVisible(true);
+        cityTextField.setVisible(true);
+        stateTextField.setVisible(true);
+        cardNumTextField.setVisible(true);
+        cardExpDateTextField.setVisible(true);
+        securityNumTextField.setVisible(true);
+
+
 	}
 
 
 }
-

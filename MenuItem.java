@@ -1,3 +1,5 @@
+package org.openjfx;
+
 import java.lang.*;
 import java.util.*;
 

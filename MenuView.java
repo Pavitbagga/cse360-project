@@ -1,3 +1,5 @@
+package org.openjfx;
+
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class MenuView extends BaseModel{

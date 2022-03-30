@@ -1,4 +1,4 @@
-package application;
+package org.openjfx;
 import java.lang.*;
 import java.util.*;
 

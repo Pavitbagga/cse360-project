@@ -2,16 +2,18 @@
 // Last modified 3/12/22
 // Basic storage class for saving addresses
 
+package org.openjfx;
+
 public class Address {
 
     private String streetAddressLine1;
     private String streetAddressLine2;
-    private int apptNumPOBox;
-    private int zipcode;
+    private String apptNumPOBox;
+    private String zipcode;
     private String city;
     private String state;
 
-    public Address(String newStreetAddressLine1, String newStreetAddressLine2, int newApptNumPOBox, int newZipcode, String newCity, String newState) {
+    public Address(String newStreetAddressLine1, String newStreetAddressLine2, String newApptNumPOBox, String newZipcode, String newCity, String newState) {
         this.streetAddressLine1 = newStreetAddressLine1;
         this.streetAddressLine2 = newStreetAddressLine2;
         this.apptNumPOBox = newApptNumPOBox;
@@ -44,7 +46,7 @@ public class Address {
         }
     }
 
-    public boolean setApptNumPOBox(int newApptNumPOBox) {
+    public boolean setApptNumPOBox(String newApptNumPOBox) {
         this.apptNumPOBox = newApptNumPOBox;
         // Should be trivial
         if (this.apptNumPOBox == newApptNumPOBox) {
@@ -56,7 +58,7 @@ public class Address {
 
     }
 
-    public boolean setZipcode(int newZipcode) {
+    public boolean setZipcode(String newZipcode) {
         this.zipcode = newZipcode;
         // Trivial
         if (this.zipcode == newZipcode) {
@@ -98,11 +100,11 @@ public class Address {
         return this.streetAddressLine2;
     }
 
-    public int getApptNumPOBox() {
+    public String getApptNumPOBox() {
         return this.apptNumPOBox;
     }
 
-    public int getZipcode() {
+    public String getZipcode() {
         return this.zipcode;
     }
     

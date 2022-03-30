@@ -1,3 +1,5 @@
+package org.openjfx;
+
 public class OrderItem {
 
     private MenuItem item;

@@ -1,3 +1,5 @@
+package org.openjfx;
+
 // Coded by Katelyn Vanderwolde
 // Last Modified 3/28/22
 // LoginView is page for users to sign into their account their username and password
@@ -93,6 +95,12 @@ public class LoginView extends BaseModel{
 		
 		this.mainView.add(wholeView, 0, 1);
 		
+	}
+
+	public void removeAllFieldsFromLogin(){
+		userNameTextField.setText("");
+		passwordTextField.setText("");
+		return;
 	}
 	
 }
