@@ -58,6 +58,7 @@ public class CheckoutView extends BaseModel
     Text totalText;
     Button placeOrderButton;
     VBox placeOrderVBox;
+    HBox couponTextHBox;
     public CheckoutView(int xSize,int ySize,ArrayList<Button> topButtons, String newPageTitle, Image newLogo, Order newOrder)
     {
         super(xSize, ySize, topButtons, newPageTitle, newLogo);
@@ -98,6 +99,7 @@ public class CheckoutView extends BaseModel
         secCodeTextField = new TextField();
         zipCodeTextField = new TextField();
         couponCodeTextField = new TextField();
+        // couponCodeTextField.setMaxSize(200 , 200);
         check = new CheckBox();
         totalText = new Text("Total: $");
         totalText.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,20));
@@ -137,14 +139,19 @@ public class CheckoutView extends BaseModel
         cartItemsVBox.setStyle("-fx-background-color: white;");
         couponCodeText.setTextAlignment(TextAlignment.LEFT);
 
+        couponTextHBox = new HBox();
+        couponTextHBox.getChildren().add(couponCodeText);
+        couponTextHBox.getChildren().add(couponCodeTextField);
+        couponTextHBox.setSpacing(5);
+        couponTextHBox.setAlignment(Pos.BASELINE_RIGHT);
+
         placeOrderVBox = new VBox();
         placeOrderVBox.setAlignment(Pos.TOP_RIGHT);
         placeOrderVBox.setSpacing(5);
         placeOrderVBox.getChildren().add(totalText);
         placeOrderVBox.getChildren().add(editCartButton);
         placeOrderVBox.getChildren().add(cancelOrderButton);
-        placeOrderVBox.getChildren().add(couponCodeText);
-        placeOrderVBox.getChildren().add(couponCodeTextField);
+        placeOrderVBox.getChildren().add(couponTextHBox);
         placeOrderVBox.getChildren().add(placeOrderButton);
         
         
