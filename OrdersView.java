@@ -1,4 +1,3 @@
-package org.openjfx;
 
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

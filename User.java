@@ -2,8 +2,6 @@
 // Last Modified 3/14/22
 // Basic storage class for saving user
 
-package org.openjfx;
-
 public class User {
 	
 	protected String firstName; 
