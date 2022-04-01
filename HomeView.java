@@ -61,7 +61,7 @@ public class HomeView  extends BaseModel{
 
 
 
-        Button menu = new Button("Menu");
+        menu = new Button("Menu");
         cakeLabel = new Text("Cake");
         iceCreamLabel =  new Text("Ice Cream/Gelato");
         smoothieLabel = new Text("Smoothies");

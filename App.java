@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -37,6 +36,8 @@ public class App extends Application{
     OrderView orderView;
     // CouponView couponView;
 
+    ArrayList<MenuItemMiniView> menuItemMiniViewList;
+
     
     
     Stage stage;
@@ -53,8 +54,9 @@ public class App extends Application{
 
     // MenuItemView Buttons
     // Button cart3;
-    // Button menu3;
-    // Button logout3;
+    Button menu3;
+    Button logout3;
+    ArrayList<Button> buttonListMenuItem3;
 
     // LoginView Buttons
     Button logout4;
@@ -200,8 +202,7 @@ public class App extends Application{
             int userIndex = findUserName(tempUserName);
             if(userIndex > -1){
                 if(userList.get(userIndex).getPassword().equals(tempPassword)){
-                    stage.setScene(menuView);
-                    stage.show();
+                    goToMenuView();
                     currentUserLoggedIn = userList.get(userIndex).getUserId();
                 }
                 else{
@@ -281,6 +282,51 @@ public class App extends Application{
         }
     };
 
+    EventHandler<MouseEvent> menuItemViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            System.out.println("This is correctly connected");
+            try{
+                InputStream in = new FileInputStream("/home/ejoerz/test/sample/src/main/java/org/openjfx/test.png");
+                topLogo = new Image(in);
+
+                MenuItemView temp = new MenuItemView(900, 700, buttonListMenuItem3, ((MenuItemMiniView)((Button) e.getSource()).getParent()).innerMenuItem.getName(), topLogo, ((MenuItemMiniView)((Button) e.getSource()).getParent()).innerMenuItem);
+                stage.setScene(temp);
+                stage.show();  
+            }
+            catch(Exception E){
+                System.out.println("The File is not where you think it is for " + ((MenuItemMiniView)((Button) e.getSource()).getParent()).innerMenuItem.getName());
+                System.out.println(E.toString());
+            
+            }
+        }
+    };
+
+    EventHandler<MouseEvent> menuViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            goToMenuView();
+        }
+    };
+
+    
+
+
+    public void goToMenuView(){
+        menuView.removeAllItems();
+            menuView.addAll(menuItemMiniViewList);
+            System.out.println("The event handler has started");
+            for(int i = 0; i < menuView.menuItems.getChildren().size(); i++){
+
+                ((MenuItemMiniView)menuView.menuItems.getChildren().get(i)).menuButton.setOnMouseClicked(menuItemViewHandler);
+                System.out.println("The button " + ((MenuItemMiniView)menuView.menuItems.getChildren().get(i)).menuButton.getId() + " has been assigned");
+
+            }
+            stage.setScene(menuView);
+            stage.show();
+    }
+
+
+    
+
 
 
    
@@ -290,6 +336,9 @@ public class App extends Application{
         this.stage = stage;
 
         userList = new ArrayList<User>();
+
+        menuList = new ArrayList<MenuItem>();
+        menuItemMiniViewList = new ArrayList<MenuItemMiniView>();
 
         currentUserIDToAssign = userList.size();
         currentUserLoggedIn = -1;
@@ -305,6 +354,7 @@ public class App extends Application{
         buttonListHome1.add(createAccountButton1);
         buttonListHome1.add(printUsersButton);
 
+
         ArrayList<Button> buttonListMenu2 = new ArrayList<Button>();
         logout2 = new Button("Logout");
         logout2.setOnMouseClicked(logoutHandler);
@@ -317,6 +367,13 @@ public class App extends Application{
         buttonListMenu2.add(currentLogin);
         buttonListMenu2.add(profile2);
 
+        buttonListMenuItem3 = new ArrayList<Button>();
+        menu3 = new Button("Return to Menu");
+        logout3 = new Button("Logout");
+        buttonListMenuItem3.add(menu3);
+        buttonListMenuItem3.add(logout3);
+        menu3.setOnMouseClicked(menuViewHandler);
+        logout3.setOnMouseClicked(logoutHandler);
 
 
         ArrayList<Button> buttonListNewProfile5 = new ArrayList<Button>();
@@ -334,15 +391,15 @@ public class App extends Application{
         logout8 = new Button("Logout");
         logout8.setOnMouseClicked(logoutHandler);
         menu8 = new Button("Menu");
-        menu8.setOnMouseClicked(menuHandler);
+        menu8.setOnMouseClicked(menuViewHandler);
         buttonListProfile8.add(menu8);
         buttonListProfile8.add(logout8);
 
 
 
 
-        // DUMMY CODE SECTION
-        Customer ethan = new Customer("Ethan", "Joerz", "ejoerz", "password1", 0, "ejoerz@asu.edu", "1234567890");
+        // DUMMY DATA SECTION
+        Customer ethan = new Customer("Ethan", "Joerz", "e", "", 0, "ejoerz@asu.edu", "1234567890");
         Address ethanAddress = new Address("123 pennsylvania ave", "", "0", "85204", "Mesa", "Arizona");
         ethan.setAddress(ethanAddress);
         Payment ethanPayment = new Payment("123456789", ethanAddress, "348", "Tomorrow");
@@ -360,6 +417,64 @@ public class App extends Application{
         dean.setPaymentInfo(deanPayment);
         Restaurant todd = new Restaurant("Todd", "Price", "tprice", "password4", 3, "Frozen Delight", 0);
 
+        Picture p1 = new Picture("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg", "Dummy picture");
+        Picture p2 = new Picture("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg", "Dummy picture");
+        Picture p3 = new Picture("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg", "Dummy picture");
+        Picture p4 = new Picture("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg", "Dummy picture");
+
+        MenuItem m1 = new MenuItem("Item 1", p1, 10, 5, 1);
+        MenuItem m2 = new MenuItem("Item 2", p2, 13, 23, 0);
+        MenuItem m3 = new MenuItem("Item 3", p3, 15, 34, 1);
+        MenuItem m4 = new MenuItem("Item 4", p4, 18, 10, 2);
+        MenuItem m5 = new MenuItem("Item 5", p1, 10, 5, 1);
+        MenuItem m6 = new MenuItem("Item 6", p2, 13, 23, 0);
+        MenuItem m7 = new MenuItem("Item 7", p3, 15, 34, 1);
+        MenuItem m8 = new MenuItem("Item 8", p4, 18, 10, 2);
+        MenuItem m9 = new MenuItem("Item 9", p1, 10, 5, 1);
+        MenuItem m10 = new MenuItem("Item 10", p2, 13, 23, 0);
+        MenuItem m11 = new MenuItem("Item 11", p3, 15, 34, 1);
+        MenuItem m12 = new MenuItem("Item 12", p4, 18, 10, 2);
+
+        m1.addIngredient("Ingredient 1");
+        m1.addIngredient("Ingredient 1.5");
+        m1.addIngredient("Ingredient 2");
+        m1.addIngredient("Ingredient 3");
+        m1.addIngredient("Ingredient 4");
+        m1.addIngredient("Ingredient 5");
+        m1.addIngredient("Ingredient 6.5");
+        m1.addIngredient("Ingredient 7");
+        m1.addIngredient("Ingredient 8");
+        m1.addIngredient("Ingredient 9");
+        m1.addIngredient("Ingredient 10");
+        m1.addIngredient("Ingredient 11");
+        m1.addIngredient("Ingredient 12");
+        m1.addIngredient("Ingredient 13");
+        m1.addIngredient("Ingredient 14");
+        m1.addIngredient("Ingredient 15");
+
+        System.out.println("Got to the start here 1");
+
+        menuList.add(m1);
+        menuList.add(m2);
+        menuList.add(m3);
+        menuList.add(m4);
+        menuList.add(m5);
+        menuList.add(m6);
+        menuList.add(m7);
+        menuList.add(m8);
+        menuList.add(m9);
+        menuList.add(m10);
+        menuList.add(m11);
+        menuList.add(m12);
+
+        for (int i = 0; i < menuList.size(); i++){
+            MenuItemMiniView temp = new MenuItemMiniView(menuList.get(i), 900, 700);
+            menuItemMiniViewList.add(temp);
+        }
+        
+
+        System.out.println("Got to the start here 2");
+
         userList.add(ethan);
         userList.add(john);
         userList.add(dean);
@@ -368,9 +483,13 @@ public class App extends Application{
         currentUserIDToAssign = 4;
         
         try {
+
+
+
             InputStream in = new FileInputStream("/home/ejoerz/test/sample/src/main/java/org/openjfx/test.png");
             topLogo = new Image(in);
             homeView = new HomeView(900, 700, buttonListHome1, "Frozen Delight Home Page", topLogo);
+            
             
             
             newProfileView = new NewProfileView(900, 700, buttonListNewProfile5, "Create New Account", topLogo);
@@ -386,6 +505,8 @@ public class App extends Application{
             loginView.loginButton.setOnMouseClicked(loginHandler);
 
             menuView = new MenuView(900, 700, buttonListMenu2, "Frozen Delight Menu", topLogo);
+
+            homeView.menu.setOnMouseClicked(menuViewHandler);
 
             stage.setScene(homeView);
             stage.show();

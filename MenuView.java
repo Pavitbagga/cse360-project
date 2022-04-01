@@ -13,23 +13,25 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 
 public class MenuView extends BaseModel{
-    HBox menuItems = new HBox();
+    VBox menuItems = new VBox();
     HBox searchButtons = new HBox();
     HBox searchBar = new HBox();
     TextField search = new TextField();
     Button searchEnter = new Button("search");
     GridPane contentView;
+    ScrollPane scroll;
+    int localXsize;
+    int localYsize;
 
     public MenuView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
 
         super(xSize, ySize, topButtons, newPageTitle, newLogo);
-        contentView = new GridPane();
-        BorderPane root = new BorderPane();
-        ScrollBar scroll = new ScrollBar();
 
-        //scroll bar
-        root.setCenter(scroll);
-        scroll.setOrientation(Orientation.VERTICAL);
+
+        localXsize = xSize;
+        localYsize = ySize;
+        contentView = new GridPane();
+        scroll = new ScrollPane();
 
 
         ColumnConstraints col0 = new ColumnConstraints();
@@ -57,32 +59,56 @@ public class MenuView extends BaseModel{
 
 
         row0.setPercentHeight(15.0);
-        row1.setPercentHeight(60.0);
-        row2.setPercentHeight(10.0);
-        row3.setPercentHeight(15.0);
+        row1.setPercentHeight(85.0);
 
 
-        rows.add(row0);
-        rows.add(row1);
-        rows.add(row2);
-        rows.add(row3);
+        contentView.getRowConstraints().add(row0);
+        contentView.getRowConstraints().add(row1);
+
+        contentView.getColumnConstraints().add(col0);
+        contentView.getColumnConstraints().add(col1);
+        contentView.getColumnConstraints().add(col2);
+        contentView.getColumnConstraints().add(col3);
 
 
-        contentView.getRowConstraints().addAll(rows);
-        contentView.getColumnConstraints().addAll(columns);
+        // contentView.getRowConstraints().addAll(rows);
+        // contentView.getColumnConstraints().addAll(columns);
 
+        contentView.add(search,1,0);
+        contentView.add(searchEnter,2,0);
+        contentView.add(scroll, 1, 1, 3, 1);
 
-        searchBar.getChildren().addAll(search);
-        searchButtons.getChildren().addAll(searchBar,searchEnter);
+        scroll.setContent(menuItems);
 
-        contentView.add(searchBar,2,1);
-        contentView.add(searchButtons,3,1);
-        contentView.add(scroll,5,1);
+        Text test1 = new Text("Test1");
+        Text test2 = new Text("Test2");
+        Text test3 = new Text("Test3");
+        Text test4 = new Text("Test4");
+
+        menuItems.getChildren().add(test1);
+        menuItems.getChildren().add(test2);
+        menuItems.getChildren().add(test3);
+        menuItems.getChildren().add(test4);
+
 
         contentView.setHgap(5);
         contentView.setVgap(5);
         contentView.setAlignment(Pos.CENTER);
 
+        // contentView.setGridLinesVisible(true);
+
         this.mainView.add(contentView, 0, 1);
+    }
+
+    public void addAll(ArrayList<MenuItemMiniView> menuList){
+        for (int i = 0; i < menuList.size(); i++){
+            
+            this.menuItems.getChildren().add(menuList.get(i));
+        }
+    }
+
+    public void removeAllItems(){
+
+        this.menuItems.getChildren().clear();
     }
 }
