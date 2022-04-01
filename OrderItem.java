@@ -36,7 +36,7 @@ public class OrderItem {
     }
 
     public boolean setPrice(int newPrice) {
-        this.price = newPrice;
+        this.price = quantity*newPrice;
         return true;
     }
 
