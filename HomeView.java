@@ -3,13 +3,18 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public class HomeView  extends BaseModel{
 
@@ -27,6 +32,11 @@ public class HomeView  extends BaseModel{
     ImageView cakeImageView;
     ImageView smoothieImageView;
     ImageView iceCreamImageView;
+
+    //added
+    HBox mainHbox1;
+    HBox mainHbox2;
+    HBox mainHbox3;
 
     HomeView(int xSize, int ySize, ArrayList<Button> buttonList, String newPageTitle, Image newLogo){
         super(xSize, ySize, buttonList, newPageTitle, newLogo);
@@ -49,6 +59,10 @@ public class HomeView  extends BaseModel{
         r2.setPercentHeight(20.0);
         r3.setPercentHeight(60.0);
 
+        mainHbox1 = new HBox();
+        mainHbox2 = new HBox();
+        mainHbox3 = new HBox();
+
         view.getColumnConstraints().add(c1);
         view.getColumnConstraints().add(c2);
         view.getColumnConstraints().add(c3);
@@ -65,15 +79,29 @@ public class HomeView  extends BaseModel{
         iceCreamLabel =  new Text("Ice Cream/Gelato");
         smoothieLabel = new Text("Smoothies");
 
-        view.add(menu, 0, 0, 3, 1);
+        // HBoxes and setPadding help center labels with pictures
+        mainHbox1.getChildren().addAll(cakeLabel);
+        mainHbox2.getChildren().addAll(iceCreamLabel);
+        mainHbox3.getChildren().addAll(smoothieLabel);
 
-        view.add(cakeLabel, 0, 1);
-        view.add(iceCreamLabel, 1, 1);
-        view.add(smoothieLabel, 2, 1);
+        mainHbox1.setPadding(new Insets(0, 5, 0,100));
+        mainHbox2.setPadding(new Insets(0, 50, 0 ,60));
+        mainHbox3.setPadding(new Insets(0, 5, 0, 80));
+
+
+        view.add(menu, 0, 0);
+        view.add(mainHbox1, 0, 1);
+        view.add(mainHbox2, 1, 1);
+        view.add(mainHbox3, 2, 1);
+     //   view.add(cakeLabel, 0, 1);
+     //   view.add(iceCreamLabel, 1, 1);
+     //   view.add(smoothieLabel, 2, 1);
+
+
 
 
         try{
-            InputStream cakeIn = new FileInputStream("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg");
+            InputStream cakeIn = new FileInputStream("/Users/12695/Documents/CSE360/src/cake.jpeg");
             cakeImage = new Image(cakeIn);
             cakeImageView = new ImageView(cakeImage);
 
@@ -81,7 +109,7 @@ public class HomeView  extends BaseModel{
             cakeImageView.setFitWidth(xSize*.25);
             cakeImageView.setPreserveRatio(true);
 
-            InputStream iceCreamIn = new FileInputStream("/home/ejoerz/test/sample/src/main/java/org/openjfx/iceCream.jpg");
+            InputStream iceCreamIn = new FileInputStream("/Users/12695/Documents/CSE360/src/iceCream.jpg");
             iceCreamImage = new Image(iceCreamIn);
             iceCreamImageView = new ImageView(iceCreamImage);
 
@@ -89,7 +117,7 @@ public class HomeView  extends BaseModel{
             iceCreamImageView.setFitWidth(xSize*.25);
             iceCreamImageView.setPreserveRatio(true);
 
-            InputStream smoothieIn = new FileInputStream("/home/ejoerz/test/sample/src/main/java/org/openjfx/smoothiePicture.jpeg");
+            InputStream smoothieIn = new FileInputStream("/Users/12695/Documents/CSE360/src/smoothie.jpeg");
             smoothieImage = new Image(smoothieIn);
             smoothieImageView = new ImageView(smoothieImage);
             smoothieImageView.setPreserveRatio(true);
@@ -100,6 +128,7 @@ public class HomeView  extends BaseModel{
             view.add(cakeImageView, 0, 2);
             view.add(iceCreamImageView, 1, 2);
             view.add(smoothieImageView, 2, 2);
+            view.setAlignment(Pos.BASELINE_CENTER);
 
 
 
