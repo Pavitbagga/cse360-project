@@ -1,4 +1,3 @@
-package org.openjfx;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;

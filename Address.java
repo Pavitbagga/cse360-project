@@ -1,7 +1,6 @@
 // Coded by Ethan Joerz
 // Last modified 3/12/22
 // Basic storage class for saving addresses
-package org.openjfx;
 
 
 public class Address {

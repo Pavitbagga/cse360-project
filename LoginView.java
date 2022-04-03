@@ -1,4 +1,3 @@
-package org.openjfx;
 
 // Coded by Katelyn Vanderwolde
 // Last Modified 3/28/22
