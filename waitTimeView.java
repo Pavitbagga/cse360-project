@@ -1,3 +1,5 @@
+package org.openjfx;
+
 
 import javafx.scene.image.*;
 import javafx.scene.layout.ColumnConstraints;
@@ -32,12 +34,10 @@ public class waitTimeView extends BaseModel
 	GridPane grid;
 	VBox waitVBox,numOrderVBox;
 	
-	public waitTimeView(int xSize, int ySize,  ArrayList<Button> topButtons, String newPageTitle, Image newLogo, Order newOrder, int newMinutes, int newPlaceInLine)
+	public waitTimeView(int xSize, int ySize,  ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD)
 	{
-		super(xSize, ySize, topButtons, newPageTitle, newLogo);
+		super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
 		
-		this.minutes = newMinutes;
-		this.placeInLine = newPlaceInLine;
 		
 
 		waitTimeText = new Text("WAIT TIME");
@@ -45,8 +45,7 @@ public class waitTimeView extends BaseModel
 		
 		readyTimeText = new Text("Your Order will be ready in:\n");
 		readyTimeText.setFont(Font.font("Arial",FontWeight.NORMAL,18));
-		String waitingTime = toString().valueOf(minutes);
-		readyTime = new Text(waitingTime);
+		readyTime = new Text();
 		readyTime.setFont(Font.font("Arial",FontWeight.BOLD,45));
 
 		ordersText = new Text("Orders");
@@ -56,8 +55,7 @@ public class waitTimeView extends BaseModel
 
 		numberOrdersText = new Text("Number of Orders before yours:\n");
 		numberOrdersText.setFont(Font.font("Arial", FontWeight.NORMAL,18));
-		String prevOrders = toString().valueOf(placeInLine);
-		numberOrders = new Text(prevOrders);
+		numberOrders = new Text();
 		numberOrders.setFont(Font.font("Arial", FontWeight.BOLD,45));
 
 		grid = new GridPane();

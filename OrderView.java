@@ -1,3 +1,4 @@
+package org.openjfx;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -14,9 +15,9 @@ public class OrderView extends BaseModel {
 
     VBox orderVbox;
 
-    public OrderView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
+    public OrderView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD) {
 
-        super(xSize, ySize, topButtons, newPageTitle, newLogo);
+        super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
 
         orders = new ScrollPane();
         orderVbox = new VBox();
@@ -32,13 +33,11 @@ public class OrderView extends BaseModel {
         for (Order o : newOrders) {
             OrderItemView newOrderItemView = new OrderItemView(o);
             orderVbox.getChildren().add(newOrderItemView);
-            orders.setContent(orderVbox);
         }
     }
 
     public void removeAllOrders() {
         orderVbox.getChildren().clear();
-        orders.setContent(orderVbox);
     }
 
 }

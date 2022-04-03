@@ -1,3 +1,4 @@
+package org.openjfx;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -22,9 +23,9 @@ public class MenuView extends BaseModel{
     int localXsize;
     int localYsize;
 
-    public MenuView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
+    public MenuView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD) {
 
-        super(xSize, ySize, topButtons, newPageTitle, newLogo);
+        super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
 
 
         localXsize = xSize;

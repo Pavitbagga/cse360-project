@@ -1,3 +1,4 @@
+package org.openjfx;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -21,6 +22,9 @@ public class CheckoutCartItemView extends GridPane{
     Text ingredientsLabel;
     ScrollPane ingredientsScroll;
     HBox ingredientLabelBox;
+    Text size;
+    Text sizeLabel;
+    HBox sizeBox;
 
     Text ingredientsList;
 
@@ -44,6 +48,23 @@ public class CheckoutCartItemView extends GridPane{
         ingredientsScroll = new ScrollPane();
         ingredientLabelBox = new HBox();
 
+        size = new Text();
+        sizeLabel = new Text("Size: ");
+        if(newItem.getSize() == 0){
+            size.setText("Regular");
+        }
+        else if(newItem.getSize() == 1){
+            size.setText("Medium");
+        }
+
+        else if(newItem.getSize() == 2){
+            size.setText("Large");
+        }
+
+        sizeBox = new HBox();
+        sizeBox.getChildren().add(sizeLabel);
+        sizeBox.getChildren().add(size);
+
         String s = "";
         for (int i = 0; i < item.getItem().getIngredients().size(); i++){
             s += item.getItem().getIngredients().get(i) + "\n";
@@ -65,9 +86,9 @@ public class CheckoutCartItemView extends GridPane{
         ColumnConstraints c4 = new ColumnConstraints();
 
         c1.setPercentWidth(30.0);
-        c2.setPercentWidth(15.0);
-        c3.setPercentWidth(30.0);
-        c4.setPercentWidth(25.0);
+        c2.setPercentWidth(17.5);
+        c3.setPercentWidth(17.5);
+        c4.setPercentWidth(30.0);
 
         this.getColumnConstraints().add(c1);
         this.getColumnConstraints().add(c2);
@@ -90,13 +111,15 @@ public class CheckoutCartItemView extends GridPane{
         this.add(title, 0, 0);
         this.add(quantityBox, 0, 1);
 
-        this.add(ingredientLabelBox, 1, 0);
-        this.add(ingredientsScroll, 2, 0, 1, 2);
+        this.add(ingredientLabelBox, 2, 0);
+        this.add(ingredientsScroll, 3, 0, 1, 2);
 
         ingredientLabelBox.setAlignment(Pos.CENTER_RIGHT);
 
-        this.add(priceBox, 3, 0);
+        this.add(priceBox, 1, 0);
+        this.add(sizeBox, 1, 1);
 
+        this.prefWidth(xSize * .3);
     }
     
 }

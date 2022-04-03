@@ -1,3 +1,4 @@
+package org.openjfx;
 
 public class OrderItem {
 
@@ -12,7 +13,7 @@ public class OrderItem {
         this.specialInstructions = specialInstructions;
         this.size = size;
         this.quantity = quantity;
-        this.price = price;
+        this.price = item.getPrice() * quantity;
     }
 
     public boolean setSpecialInstructions(String newSpecialInstructions) {
@@ -31,12 +32,13 @@ public class OrderItem {
         }
         else {
             this.quantity = newQuantity;
+            this.price = item.getPrice() * quantity;
             return true;
         }
     }
 
     public boolean setPrice(int newPrice) {
-        this.price = quantity*newPrice;
+        this.price = newPrice;
         return true;
     }
 

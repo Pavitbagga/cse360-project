@@ -1,13 +1,13 @@
-import java.nio.file.ClosedWatchServiceException;
+package org.openjfx;
+
+
 import java.util.ArrayList;
 
-import javafx.css.converter.LadderConverter;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
@@ -33,22 +33,34 @@ public class CheckoutView extends BaseModel
     GridPane paymentInfoGridPane;
     VBox cartItemsVBox;
     GridPane cartGridPane;
-    TextField nameTextField;
+    TextField firstNameTextField;
+    TextField lastNameTextField;
     TextField emailTextField;
     TextField phoneNumTextField;
+    TextField addressLine1TextField;
+	TextField addressLine2TextField;
+	TextField zipCodeTextField;
+	TextField aptNumPoBoxTextField;
+	TextField cityTextField;
+	TextField stateTextField;
     Text registeredUsersOnlyText;
     TextField cardNumTextField;
     TextField cardExpDateTextField;
     TextField secCodeTextField;
-    TextField zipCodeTextField;
     TextField couponCodeTextField;
-    Text nameText;
+    Text firstNameText;
+    Text lastNameText;
     Text emailText;
     Text phoneNumText;
     Text cardNumText;
     Text cardExpDateText;
     Text secCodeText;
     Text zipCodeText;
+    Text addressLine1Text;
+	Text addressLine2Text;
+	Text aptNumPOBoxText;
+	Text cityText;
+	Text stateText;
     Text couponCodeText;
     HBox buttonBox;
     GridPane separationGrid;
@@ -59,9 +71,17 @@ public class CheckoutView extends BaseModel
     Button placeOrderButton;
     VBox placeOrderVBox;
     HBox couponTextHBox;
-    public CheckoutView(int xSize,int ySize,ArrayList<Button> topButtons, String newPageTitle, Image newLogo, Order newOrder)
+
+    int thisXSize;
+    int thisYSize;
+
+    ScrollPane itemScroll;
+    public CheckoutView(int xSize,int ySize,ArrayList<Button> topButtons, String newPageTitle, Image newLogo, Order newOrder, String newPWD)
     {
-        super(xSize, ySize, topButtons, newPageTitle, newLogo);
+        super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
+
+        thisXSize = xSize;
+        thisYSize = ySize; 
 
         cartGridPane = new GridPane();
         checkOutGridPane = new GridPane();
@@ -78,19 +98,26 @@ public class CheckoutView extends BaseModel
         paymentInfoText.setFont(Font.font("Arial",FontWeight.BOLD,20));
         cartItemsVBox = new VBox();
 
-        nameTextField = new TextField();
+        firstNameTextField = new TextField();
+        lastNameTextField = new TextField();
         emailTextField = new TextField();
         phoneNumTextField = new TextField();
 
         registeredUsersOnlyText = new Text("For Registered Users only: ");
         useSaveCardInfoText = new Text("Use saved card info");
-        nameText = new Text("Name: ");
+        firstNameText = new Text("First Name: ");
+        lastNameText = new Text("Last Name: ");
         emailText = new Text("Email: ");
         phoneNumText = new Text("Phone Number: ");
+        addressLine1Text = new Text("Address Line 1: ");
+		addressLine2Text = new Text("Address Line 2: ");
+		zipCodeText = new Text("ZipCode: ");
+		aptNumPOBoxText = new Text("Apt PO Box Number: ");
+		cityText = new Text("City: ");
+		stateText = new Text("State: ");
         cardNumText = new Text("Card Number: ");
         cardExpDateText = new Text("Expiration Date: ");
         secCodeText = new Text("Security Code: ");
-        zipCodeText = new Text("Zip Code: ");
         couponCodeText = new Text("Coupon Code ");
 
 
@@ -99,35 +126,54 @@ public class CheckoutView extends BaseModel
         secCodeTextField = new TextField();
         zipCodeTextField = new TextField();
         couponCodeTextField = new TextField();
+        addressLine1TextField = new TextField();
+		addressLine2TextField = new TextField();
+		aptNumPoBoxTextField = new TextField();
+		cityTextField = new TextField();
+		stateTextField = new TextField();
         // couponCodeTextField.setMaxSize(200 , 200);
         check = new CheckBox();
         totalText = new Text("Total: $");
         totalText.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,20));
 
         checkOutGridPane.add(checkOutText, 0, 0);
-        checkOutGridPane.add(logInButton, 1, 1);
-        checkOutGridPane.add(nameText,2, 3);
-        checkOutGridPane.add(nameTextField, 3, 3);
-        checkOutGridPane.add(emailText, 2, 4);
-        checkOutGridPane.add(emailTextField,3, 4);
-        checkOutGridPane.add(phoneNumText, 2, 5);
-        checkOutGridPane.add(phoneNumTextField, 3, 5);     
+        checkOutGridPane.add(logInButton, 0, 1);
+
+        checkOutGridPane.add(firstNameText,0, 3);
+        checkOutGridPane.add(firstNameTextField, 1, 3);
+        checkOutGridPane.add(lastNameText,0, 4);
+        checkOutGridPane.add(lastNameTextField, 1, 4);
+        checkOutGridPane.add(emailText, 0, 5);
+        checkOutGridPane.add(emailTextField,1, 5);
+        checkOutGridPane.add(phoneNumText, 0, 6);
+        checkOutGridPane.add(phoneNumTextField, 1, 6);
+        checkOutGridPane.add(addressLine1Text, 0, 7);
+        checkOutGridPane.add(addressLine1TextField, 1, 7);
+        checkOutGridPane.add(addressLine2Text, 0, 8);
+        checkOutGridPane.add(addressLine2TextField, 1, 8);
+        checkOutGridPane.add(zipCodeText, 0, 9);
+        checkOutGridPane.add(zipCodeTextField, 1, 9);
+        checkOutGridPane.add(aptNumPOBoxText, 0, 10);
+        checkOutGridPane.add(aptNumPoBoxTextField, 1, 10);
+        checkOutGridPane.add(cityText, 0, 11);
+        checkOutGridPane.add(cityTextField, 1, 11);
+        checkOutGridPane.add(stateText, 0, 12);
+        checkOutGridPane.add(stateTextField, 1, 12);         
         checkOutGridPane.setAlignment(Pos.TOP_LEFT);
         // checkOutGridPane.setGridLinesVisible(true);
 
         paymentInfoGridPane.add(paymentInfoText, 0, 0);
         paymentInfoGridPane.add(registeredUsersOnlyText, 0, 1);
-        paymentInfoGridPane.add(cardNumText, 1, 4);
-        paymentInfoGridPane.add(cardNumTextField, 2, 4);
-        paymentInfoGridPane.add(cardExpDateText, 1, 5);
-        paymentInfoGridPane.add(cardExpDateTextField, 2, 5);
-        paymentInfoGridPane.add(secCodeText, 1, 6);
-        paymentInfoGridPane.add(secCodeTextField, 2, 6);
-        paymentInfoGridPane.add(zipCodeText, 1, 7);
-        paymentInfoGridPane.add(zipCodeTextField, 2, 7);
+        paymentInfoGridPane.add(cardNumText, 0, 4);
+        paymentInfoGridPane.add(cardNumTextField, 1, 4);
+        paymentInfoGridPane.add(cardExpDateText, 0, 5);
+        paymentInfoGridPane.add(cardExpDateTextField, 1, 5);
+        paymentInfoGridPane.add(secCodeText, 0, 6);
+        paymentInfoGridPane.add(secCodeTextField, 1, 6);
         paymentInfoGridPane.add(useSaveCardInfoText, 1, 2);
-        paymentInfoGridPane.setHalignment(check, HPos.RIGHT);
+        // paymentInfoGridPane.setHalignment(check, HPos.RIGHT);
         paymentInfoGridPane.add(check, 0, 2);
+        check.setAlignment(Pos.CENTER_RIGHT);
         paymentInfoGridPane.setAlignment(Pos.TOP_LEFT);
         // paymentInfoGridPane.setGridLinesVisible(true);
 
@@ -143,16 +189,19 @@ public class CheckoutView extends BaseModel
         couponTextHBox.getChildren().add(couponCodeText);
         couponTextHBox.getChildren().add(couponCodeTextField);
         couponTextHBox.setSpacing(5);
-        couponTextHBox.setAlignment(Pos.BASELINE_RIGHT);
+        couponTextHBox.setAlignment(Pos.BASELINE_LEFT);
 
         placeOrderVBox = new VBox();
-        placeOrderVBox.setAlignment(Pos.TOP_RIGHT);
+        placeOrderVBox.setAlignment(Pos.TOP_LEFT);
         placeOrderVBox.setSpacing(5);
         placeOrderVBox.getChildren().add(totalText);
         placeOrderVBox.getChildren().add(editCartButton);
         placeOrderVBox.getChildren().add(cancelOrderButton);
         placeOrderVBox.getChildren().add(couponTextHBox);
         placeOrderVBox.getChildren().add(placeOrderButton);
+
+        itemScroll = new ScrollPane();
+        itemScroll.setContent(cartItemsVBox);
         
         
 
@@ -161,19 +210,22 @@ public class CheckoutView extends BaseModel
         super.columns.clear();
         super.rows.clear();
         ColumnConstraints column1 = new ColumnConstraints();
+        ColumnConstraints column15 = new ColumnConstraints();
 		ColumnConstraints column2 = new ColumnConstraints();
 
-        column1.setPercentWidth(50.0);
+        column1.setPercentWidth(40.0);
+        column15.setPercentWidth(10.0);
 		column2.setPercentWidth(50.0);
         
         columns.add(column1);
+        columns.add(column15);
 		columns.add(column2);
 
         RowConstraints row1 = new RowConstraints();
 		RowConstraints row2 = new RowConstraints();
 
-        row1.setPercentHeight(55.0);
-		row2.setPercentHeight(45.0);
+        row1.setPercentHeight(70.0);
+		row2.setPercentHeight(30.0);
 
         rows.add(row1);
 		rows.add(row2);  
@@ -181,10 +233,10 @@ public class CheckoutView extends BaseModel
         separationGrid.getRowConstraints().addAll(rows);
         separationGrid.getColumnConstraints().addAll(columns);
 
-        separationGrid.add(checkOutGridPane, 0, 0);
-        separationGrid.add(paymentInfoGridPane , 0,1);
-        separationGrid.add(cartItemsVBox, 1, 0);
-        separationGrid.add(placeOrderVBox, 1, 1);
+        separationGrid.add(checkOutGridPane, 0, 0, 1, 1);
+        separationGrid.add(paymentInfoGridPane , 0 ,1, 1, 1);
+        separationGrid.add(itemScroll, 1, 0, 2, 1);
+        separationGrid.add(placeOrderVBox, 2, 1);
 
       
         separationGrid.setVgap(5);
@@ -201,13 +253,16 @@ public class CheckoutView extends BaseModel
 
 
     }
-    public void addAllItemsToCart()
+    public void addAllItemsToCart(Order newOrder)
     {
-
+        for(int i = 0; i < newOrder.getOrderContents().size(); i++){
+            CheckoutCartItemView temp = new CheckoutCartItemView(newOrder.getOrderContents().get(i), thisXSize, thisYSize);
+            cartItemsVBox.getChildren().add(temp);
+        }
     }
     public void removeAllItems()
     {
-        
+        cartItemsVBox.getChildren().clear();
     }
 
 }

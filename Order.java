@@ -1,3 +1,4 @@
+package org.openjfx;
 
 import java.util.*;
 
@@ -90,6 +91,14 @@ public class Order {
 
     public ArrayList<OrderItem> getOrderContents() {
         return orderContents;
+    }
+
+    public int getWaitTime(){
+        int wait = 0;
+        for (int i = 0; i < orderContents.size(); i++){
+            wait += orderContents.get(i).getItem().getPrepTime() * orderContents.get(i).getQuantity();
+        }
+        return wait;
     }
 
 

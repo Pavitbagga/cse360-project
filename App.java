@@ -1,3 +1,4 @@
+package org.openjfx;
 
 
 
@@ -7,6 +8,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -22,20 +24,26 @@ public class App extends Application{
     ArrayList<Order> orders;
     ArrayList<MenuItem> menuList;
     Image topLogo;
+    Order currentOrder;
+    int nextOrderNumber;
 
     HomeView homeView;
     MenuView menuView;
     LoginView loginView;
     NewProfileView newProfileView;
     CartView cartView;
-    // CheckOutView checkOutView;
+    CheckoutView checkOutView;
     ProfileView profileView;
-    // WaitView waitView; 
+    waitTimeView waitView; 
     EditItemView editItemView;
     OrderView orderView;
     // CouponView couponView;
 
+    Customer guest;
+
     ArrayList<MenuItemMiniView> menuItemMiniViewList;
+
+    String pwd = "/home/ejoerz/test/sample/src/main/java/org/openjfx/";
 
     
     
@@ -69,18 +77,17 @@ public class App extends Application{
     Button logout6;
 
     // CheckOutView Buttons
-    // Button menu7;
-    // Button profile7;
-    // Button logout7;
+    Button menu7;
+    Button profile7;
+    Button logout7;
 
     // ProfileView Buttons
     Button logout8;
     Button menu8;
     
     // WaitView Buttons
-    // Button logout9;
-    // Button menu9;
-    // Button profile9;
+    Button logout9;
+
 
     // EditItemView Buttons
     Button logout10;
@@ -120,6 +127,7 @@ public class App extends Application{
     EventHandler<MouseEvent> logoutHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
             currentUserLoggedIn = -1;
+            currentOrder = new Order(nextOrderNumber, guest);
             stage.setScene(homeView);
             stage.show();
         }
@@ -133,6 +141,8 @@ public class App extends Application{
 
     EventHandler<MouseEvent> printUsersHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
+            System.out.println("Customer : Name: " + guest.getFirstName() + " UserID: " + guest.getUserId() + " City: " + guest.getAddress().getCity() + ":");            
+
             for(int i = 0; i < userList.size(); i++){
                 if(userList.get(i).getClass() == Customer.class){
                     System.out.println("Customer : Name: " + userList.get(i).getFirstName() + " UserID: " + userList.get(i).getUserId());
@@ -201,7 +211,15 @@ public class App extends Application{
             int userIndex = findUserName(tempUserName);
             if(userIndex > -1){
                 if(userList.get(userIndex).getPassword().equals(tempPassword)){
-                    goToMenuView();
+                    if(userList.get(userIndex).getClass() == Customer.class){
+                        goToMenuView();
+                    }
+                    else if (userList.get(userIndex).getClass() == Restaurant.class){
+                        orderView.removeAllOrders();
+                        orderView.addAllOrders(orders);
+                        stage.setScene(orderView);
+                        stage.show();
+                    }
                     currentUserLoggedIn = userList.get(userIndex).getUserId();
                 }
                 else{
@@ -217,7 +235,15 @@ public class App extends Application{
     EventHandler<MouseEvent> profileHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
             profileView.removeAllFromProfile();
-            profileView.addAllFieldsToProfile(userList.get(findUserId(currentUserLoggedIn)));
+            if(findUserId(currentUserLoggedIn) == -1){
+                profileView.addAllFieldsToProfile(guest);
+                profileView.saveChanges.setVisible(false);
+                profileView.editAccountInfo.setVisible(false);
+            }
+            else{
+                profileView.addAllFieldsToProfile(userList.get(findUserId(currentUserLoggedIn)));
+            }
+            
             stage.setScene(profileView);
             stage.show();
         }
@@ -283,12 +309,21 @@ public class App extends Application{
 
     EventHandler<MouseEvent> menuItemViewHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
-            System.out.println("This is correctly connected");
             try{
-                InputStream in = new FileInputStream("/home/ejoerz/test/sample/src/main/java/org/openjfx/test.png");
+                InputStream in = new FileInputStream(pwd + "test.png");
                 topLogo = new Image(in);
 
-                MenuItemView temp = new MenuItemView(900, 700, buttonListMenuItem3, ((MenuItemMiniView)((Button) e.getSource()).getParent()).innerMenuItem.getName(), topLogo, ((MenuItemMiniView)((Button) e.getSource()).getParent()).innerMenuItem);
+                MenuItemView temp = new MenuItemView(900, 700, buttonListMenuItem3, ((MenuItemMiniView)((Button) e.getSource()).getParent()).innerMenuItem.getName(), topLogo, ((MenuItemMiniView)((Button) e.getSource()).getParent()).innerMenuItem, -2, pwd);
+
+                temp.regular.setOnMouseClicked(regularButtonHandler);
+                temp.medium.setOnMouseClicked(mediumButtonHandler);
+                temp.large.setOnMouseClicked(largeButtonHandler);
+
+                temp.plus.setOnMouseClicked(incrementButtonHandler);
+                temp.minus.setOnMouseClicked(decrementButtonHandler);
+
+                temp.addToCart.setOnMouseClicked(addItemToCartHandler);
+
                 stage.setScene(temp);
                 stage.show();  
             }
@@ -306,6 +341,63 @@ public class App extends Application{
         }
     };
 
+    EventHandler<MouseEvent> regularButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            ((Button) e.getSource()).setStyle("-fx-background-color: #00FF00");
+            ((MenuItemView)((Button) e.getSource()).getScene()).buttonSelected = 0;
+            ((MenuItemView)((Button) e.getSource()).getScene()).medium.setStyle("");
+            ((MenuItemView)((Button) e.getSource()).getScene()).large.setStyle("");
+        }
+    };
+    EventHandler<MouseEvent> mediumButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            ((Button) e.getSource()).setStyle("-fx-background-color: #00FF00");
+            ((MenuItemView)((Button) e.getSource()).getScene()).buttonSelected = 1;
+            ((MenuItemView)((Button) e.getSource()).getScene()).regular.setStyle("");
+            ((MenuItemView)((Button) e.getSource()).getScene()).large.setStyle("");
+        }
+    };
+
+    EventHandler<MouseEvent> largeButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            ((Button) e.getSource()).setStyle("-fx-background-color: #00FF00");
+            ((MenuItemView)((Button) e.getSource()).getScene()).buttonSelected = 2;
+            ((MenuItemView)((Button) e.getSource()).getScene()).regular.setStyle("");
+            ((MenuItemView)((Button) e.getSource()).getScene()).medium.setStyle("");
+        }
+    };
+
+    EventHandler<MouseEvent> incrementButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            int temp = Integer.parseInt(((MenuItemView)((Button) e.getSource()).getScene()).quantity.getText());
+            temp ++;
+
+            ((MenuItemView)((Button) e.getSource()).getScene()).quantity.setText("" + temp);
+        }
+    };
+
+    EventHandler<MouseEvent> decrementButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            int temp = Integer.parseInt(((MenuItemView)((Button) e.getSource()).getScene()).quantity.getText());
+            if(temp > 0){
+                temp--;
+            }
+            
+
+            ((MenuItemView)((Button) e.getSource()).getScene()).quantity.setText("" + temp);
+        }
+    };
+
+    EventHandler<MouseEvent> addItemToCartHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            OrderItem temp = new OrderItem(((MenuItemView)((Button) e.getSource()).getScene()).item, "", ((MenuItemView)((Button) e.getSource()).getScene()).buttonSelected, (Integer.parseInt(((MenuItemView)((Button) e.getSource()).getScene()).quantity.getText())), (Integer.parseInt(((MenuItemView)((Button) e.getSource()).getScene()).quantity.getText())) * ((MenuItemView)((Button) e.getSource()).getScene()).item.getPrice());
+            currentOrder.addOrderItem(temp);
+            goToMenuView();
+        }
+    };
+
+
+
     
 
 
@@ -316,23 +408,403 @@ public class App extends Application{
             for(int i = 0; i < menuView.menuItems.getChildren().size(); i++){
 
                 ((MenuItemMiniView)menuView.menuItems.getChildren().get(i)).menuButton.setOnMouseClicked(menuItemViewHandler);
-                System.out.println("The button " + ((MenuItemMiniView)menuView.menuItems.getChildren().get(i)).menuButton.getId() + " has been assigned");
+                
 
             }
             stage.setScene(menuView);
             stage.show();
     }
 
+    EventHandler<MouseEvent> cartViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            removeAllItemsFromCart(cartView);
+            addAllItemsToCart(currentOrder, cartView);
+            stage.setScene(cartView);
+            stage.show();
+        }
+    };
+
+    EventHandler<MouseEvent> removeCartViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+
+            cartView.itemsContainter.getChildren().remove(((CartItemView)((Button) e.getSource()).getParent()));
+            currentOrder.removeOrderItem(((CartItemView)((Button) e.getSource()).getParent()).item);
+
+            removeAllItemsFromCart(cartView);
+            addAllItemsToCart(currentOrder, cartView);
+            stage.setScene(cartView);
+            stage.show();
+        }
+    };
+
+    EventHandler<MouseEvent> editCartViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+
+            try{
+                InputStream in = new FileInputStream(pwd + "test.png");
+                topLogo = new Image(in);
+
+                int temp1 = findItem(((CartItemView)((Button) e.getSource()).getParent()).item);
+
+                MenuItemView temp = new MenuItemView(900, 700, buttonListMenuItem3, ((CartItemView)((Button) e.getSource()).getParent()).item.getItem().getName(), topLogo, ((CartItemView)((Button) e.getSource()).getParent()).item.getItem(), temp1, pwd);
+
+                temp.buttonSelected =  ((CartItemView)((Button) e.getSource()).getParent()).item.getSize();
+
+                if(temp.buttonSelected == 0){
+                    temp.regular.setStyle("-fx-background-color: #00FF00");
+                    temp.medium.setStyle("");
+                    temp.large.setStyle("");
+                }
+                else if(temp.buttonSelected == 1){
+                    temp.regular.setStyle("");
+                    temp.medium.setStyle("-fx-background-color: #00FF00");
+                    temp.large.setStyle("");
+                }
+                else if(temp.buttonSelected == 2){
+                    temp.regular.setStyle("");
+                    temp.medium.setStyle("");
+                    temp.large.setStyle("-fx-background-color: #00FF00");
+                }
+                temp.regular.setOnMouseClicked(regularButtonHandler);
+                temp.medium.setOnMouseClicked(mediumButtonHandler);
+                temp.large.setOnMouseClicked(largeButtonHandler);
+
+                temp.amount.setText(((CartItemView)((Button) e.getSource()).getParent()).price.getText());
+
+
+
+                temp.plus.setOnMouseClicked(incrementButtonHandler);
+                temp.minus.setOnMouseClicked(decrementButtonHandler);
+
+                temp.quantity.setText(((CartItemView)((Button) e.getSource()).getParent()).quantity.getText());
+
+                temp.addToCart.setOnMouseClicked(addEditedItemToCartHandler);
+
+                stage.setScene(temp);
+                stage.show();  
+            }
+            catch(Exception E){
+                System.out.println("The File is not where you think it is for " + ((MenuItemMiniView)((Button) e.getSource()).getParent()).innerMenuItem.getName());
+                System.out.println(E.toString());
+            
+            }
+        }
+    };
+
+
+    // TODO bug with pricing changes when editing item
+    EventHandler<MouseEvent> addEditedItemToCartHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            int temp = ((MenuItemView)((Button) e.getSource()).getScene()).thisIndex;
+            currentOrder.getOrderContents().get(temp).setSize(((MenuItemView)((Button) e.getSource()).getScene()).buttonSelected);
+            currentOrder.getOrderContents().get(temp).setQuantity(Integer.parseInt(((MenuItemView)((Button) e.getSource()).getScene()).quantity.getText()));
+            currentOrder.getOrderContents().get(temp).setPrice(currentOrder.getOrderContents().get(temp).getItem().getPrice());
+
+            removeAllItemsFromCart(cartView);
+            addAllItemsToCart(currentOrder, cartView);
+            stage.setScene(cartView);
+            stage.show();
+        }
+    };
+
+
+
+    public void addAllItemsToCart(Order newOrder, CartView cart)
+	{
+		for(int i = 0; i < newOrder.getOrderContents().size(); i++){
+			CartItemView temp = new CartItemView(newOrder.getOrderContents().get(i), cart.insideXSize, cart.insideYSize);
+			cart.itemsContainter.getChildren().add(temp);
+            temp.remove.setOnMouseClicked(removeCartViewHandler);
+            temp.edit.setOnMouseClicked(editCartViewHandler);
+
+		}
+
+		cart.total.setText("" + newOrder.getTotalPrice());
+	}
+	
+	public void removeAllItemsFromCart(CartView cart)
+	{
+		cart.itemsContainter.getChildren().clear();
+	}
+
+    EventHandler<MouseEvent> cancelCartViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+
+            currentOrder = new Order(nextOrderNumber, guest);
+            goToMenuView();
+        }
+    };
+
+    EventHandler<MouseEvent> checkoutViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+            checkOutView.removeAllItems();
+            checkOutView.addAllItemsToCart(currentOrder);
+            if(currentUserLoggedIn == -1) {
+                checkOutView.firstNameTextField.setText("Enter First Name");
+                checkOutView.lastNameTextField.setText("Enter Last Name");
+                checkOutView.addressLine1Text.setText("Enter Address Line 1");
+                checkOutView.addressLine2Text.setText("Enter Address Line 2");
+                
+
+            }
+            
+            checkOutView.editCartButton.setOnMouseClicked(cartViewHandler);
+            checkOutView.placeOrderButton.setOnMouseClicked(placeOrderHandler);
+            stage.setScene(checkOutView);
+            stage.show();
+        }
+    };
+
+    EventHandler<MouseEvent> placeOrderHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            if(currentUserLoggedIn == -1){
+                Customer tempCustomer = new Customer(checkOutView.firstNameTextField.getText(), checkOutView.lastNameTextField.getText(), "guest", "", -1, checkOutView.emailTextField.getText(), checkOutView.phoneNumTextField.getText());
+                Order temp = new Order(nextOrderNumber, tempCustomer);
+                Address tempAddress = new Address(checkOutView.addressLine1TextField.getText(), checkOutView.addressLine2TextField.getText(), checkOutView.aptNumPoBoxTextField.getText(), checkOutView.zipCodeTextField.getText(), checkOutView.cityTextField.getText(), checkOutView.stateTextField.getText());
+
+                Payment tempPayment = new Payment(checkOutView.cardNumTextField.getText(), tempAddress, checkOutView.secCodeTextField.getText(), checkOutView.cardExpDateTextField.getText());
+
+                temp.getOrderer().setAddress(tempAddress);
+                temp.getOrderer().setPaymentInfo(tempPayment);
+
+                for(int i = 0; i < currentOrder.getOrderContents().size(); i++){
+                    temp.addOrderItem(currentOrder.getOrderContents().get(i));
+                }
+
+                orders.add(temp);
+
+            }
+            else{
+                Order temp = new Order(nextOrderNumber, (Customer) userList.get(findUserId(currentUserLoggedIn)));
+                for(int i = 0; i < currentOrder.getOrderContents().size(); i++){
+                    temp.addOrderItem(currentOrder.getOrderContents().get(i));
+                }
+                orders.add(temp);
+            }
+
+            nextOrderNumber++;
+
+            waitView.readyTime.setText("15");
+            waitView.numberOrders.setText("2");
+
+            stage.setScene(waitView);
+            stage.show();
+
+        }
+    };
+
+
+
+    EventHandler<MouseEvent> ordersViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+            orderView.removeAllOrders();
+            orderView.addAllOrders(orders);
+            stage.setScene(orderView);
+            stage.show();
+        }
+    };
+
+    EventHandler<MouseEvent> editItemViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+            editItemView.removeAllFields();;
+            stage.setScene(editItemView);
+            stage.show();
+        }
+    };
+
+    EventHandler<MouseEvent> editItemSearchHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+            String temp = editItemView.searchBar.getText();
+            editItemView.removeAllFields();
+            editItemView.searchBar.setText(temp);
+            int tempIndex = findMenuItem(temp);
+            if(tempIndex == -1){
+                
+                editItemView.foodItemNewName.setText("Try Again");
+            }
+            else{
+                editItemView.item = menuList.get(tempIndex);
+                editItemView.foodItemNewName.setText(editItemView.item.getName());
+                editItemView.prepTimeTextField.setText("" + editItemView.item.getPrepTime());
+                editItemView.newPriceTextField.setText("" + editItemView.item.getPrice());
+                editItemView.selectedCategory = editItemView.item.getCategory();
+                
+                if(editItemView.selectedCategory == 0){
+                    editItemView.cakeRadioButton.setStyle("-fx-background-color: #00FF00");
+                    editItemView.smoothieRadioButton.setStyle("");
+                    editItemView.iceCreamRadioButton.setStyle("");
+                }
+                else if (editItemView.selectedCategory == 1){
+                    editItemView.cakeRadioButton.setStyle("");
+                    editItemView.smoothieRadioButton.setStyle("-fx-background-color: #00FF00");
+                    editItemView.iceCreamRadioButton.setStyle("");
+                }
+
+                else if (editItemView.selectedCategory == 2){
+                    editItemView.cakeRadioButton.setStyle("");
+                    editItemView.smoothieRadioButton.setStyle("");
+                    editItemView.iceCreamRadioButton.setStyle("-fx-background-color: #00FF00");
+                }
+
+            }
+        }
+    };
+
+    EventHandler<MouseEvent> cakeRadioButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            editItemView.selectedCategory = 0;
+            editItemView.cakeRadioButton.setStyle("-fx-background-color: #00FF00");
+            editItemView.smoothieRadioButton.setStyle("");
+            editItemView.iceCreamRadioButton.setStyle("");
+        }
+    };
+
+    EventHandler<MouseEvent> smoothieRadioButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            editItemView.selectedCategory = 1;
+            editItemView.cakeRadioButton.setStyle("");
+            editItemView.smoothieRadioButton.setStyle("-fx-background-color: #00FF00");
+            editItemView.iceCreamRadioButton.setStyle("");
+        }
+    };
+
+    EventHandler<MouseEvent> iceCreamRadioButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            editItemView.selectedCategory = 2;
+            editItemView.cakeRadioButton.setStyle("");
+            editItemView.smoothieRadioButton.setStyle("");
+            editItemView.iceCreamRadioButton.setStyle("-fx-background-color: #00FF00");
+        }
+    };
+    EventHandler<MouseEvent> editExistingItemButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            editItemView.selectedMode = 0;
+            editItemView.editExistingItemButton.setStyle("-fx-background-color: #00FF00");
+            editItemView.addNewItemButton.setStyle("");
+            editItemView.deleteItemButton.setStyle("");
+            editItemView.searchBar.setVisible(true);
+            editItemView.searchGoButton.setVisible(true);
+            editItemView.createItemButton.setText("Create Item");
+            
+        }
+    };
+    EventHandler<MouseEvent> createNewItemButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            editItemView.selectedMode = 1;
+            editItemView.editExistingItemButton.setStyle("");
+            editItemView.addNewItemButton.setStyle("-fx-background-color: #00FF00");
+            editItemView.deleteItemButton.setStyle("");
+            editItemView.removeAllFields();
+            editItemView.searchBar.setVisible(false);
+            editItemView.searchGoButton.setVisible(false);
+            editItemView.createItemButton.setText("Create Item");
+
+        }
+    };
+
+    EventHandler<MouseEvent> deleteItemButtonHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            editItemView.selectedMode = 2;
+            editItemView.editExistingItemButton.setStyle("");
+            editItemView.addNewItemButton.setStyle("");
+            editItemView.deleteItemButton.setStyle("-fx-background-color: #00FF00");
+            editItemView.removeAllFields();
+            editItemView.searchBar.setVisible(true);
+            editItemView.searchGoButton.setVisible(true);
+
+            editItemView.createItemButton.setText("Remove Item");
+
+        }
+    };
+
+    EventHandler<MouseEvent> createNewItemHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            if(editItemView.selectedMode == 0){
+                int tempIndex = findMenuItem(editItemView.item.getName());
+                if(tempIndex != -1){
+                    menuList.get(tempIndex).setName(editItemView.foodItemNewName.getText());
+                    menuList.get(tempIndex).setPictureURL(editItemView.foodTagsTextField.getText());
+                    menuList.get(tempIndex).setPrice(Integer.parseInt(editItemView.newPriceTextField.getText()));
+                    menuList.get(tempIndex).setPrepTime(Integer.parseInt(editItemView.prepTimeTextField.getText()));
+                    menuList.get(tempIndex).setCategory(editItemView.selectedCategory);
+                    for(int i = 0; i < menuItemMiniViewList.size(); i++){
+                        if(menuItemMiniViewList.get(i).innerMenuItem == menuList.get(tempIndex)){
+                            menuItemMiniViewList.get(i).menuName.setText(editItemView.foodItemNewName.getText());
+                            try{
+                                InputStream in = new FileInputStream(pwd + editItemView.foodTagsTextField.getText());
+                                Image menuImg = new Image(in);
+                                menuItemMiniViewList.get(i).menuImage.setImage(menuImg);
+                                menuList.get(tempIndex).getPicture().setUrl(pwd + editItemView.foodTagsTextField.getText());
+                                editItemView.ingredientListTextField.setText("Picture Succesful");
+                            }
+                            catch(Exception e2){
+                                System.out.println(e2.toString());
+                                editItemView.ingredientListTextField.setText("Please Try Again");
+                            }
+                        }
+                    }
+
+                    System.out.println("Edited");
+                }
+            }
+            else if (editItemView.selectedMode == 1){
+                MenuItem temp = new MenuItem(editItemView.foodItemNewName.getText(), new Picture(editItemView.foodTagsTextField.getText(), ""), Integer.parseInt(editItemView.newPriceTextField.getText()), Integer.parseInt(editItemView.prepTimeTextField.getText()), editItemView.selectedCategory);
+
+                menuList.add(temp);
+                MenuItemMiniView temp2 = new MenuItemMiniView(temp, 900, 700);
+                menuItemMiniViewList.add(temp2);
+                System.out.println("Created");
+            }
+
+            else if(editItemView.selectedMode == 2){
+                int tempIndex = findMenuItem(editItemView.item.getName());
+                if(tempIndex != -1){
+                    for(int i = 0; i < menuItemMiniViewList.size(); i++){
+                        if(menuItemMiniViewList.get(i).innerMenuItem == menuList.get(tempIndex)){
+                            menuItemMiniViewList.remove(i);
+                        }
+                    }
+                    menuList.remove(tempIndex);
+                }
+                System.out.println("Deleted");
+            }
+
+        }
+    };
 
     
 
 
 
+    
+
+
+    
    
 
     @Override
     public void start(Stage stage) {
         this.stage = stage;
+
+        nextOrderNumber = 2;
+
+        guest = new Customer("Guest", "Guest", "guest", "", -1, "", "");
+        Address guestAddress = new Address("", "", "", "", "", "");
+        guest.setAddress(guestAddress);
+        Payment guestPayment = new Payment("", guestAddress, "", "");
+        guest.setPaymentInfo(guestPayment);
+
+
+        orders = new ArrayList<Order>();
+
+        currentOrder = new Order(-2, guest);
 
         userList = new ArrayList<User>();
 
@@ -357,13 +829,13 @@ public class App extends Application{
         ArrayList<Button> buttonListMenu2 = new ArrayList<Button>();
         logout2 = new Button("Logout");
         logout2.setOnMouseClicked(logoutHandler);
-        Button currentLogin = new Button("Current Login");
-        currentLogin.setOnMouseClicked(currentHandler);
+        cart2 = new Button("Cart");
+        cart2.setOnMouseClicked(cartViewHandler);
         profile2 = new Button("Profile");
         profile2.setOnMouseClicked(profileHandler);
         
         buttonListMenu2.add(logout2);
-        buttonListMenu2.add(currentLogin);
+        buttonListMenu2.add(cart2);
         buttonListMenu2.add(profile2);
 
         buttonListMenuItem3 = new ArrayList<Button>();
@@ -386,6 +858,33 @@ public class App extends Application{
         logout4.setOnMouseClicked(logoutHandler);
         buttonListLogin4.add(logout4);
 
+        ArrayList<Button> buttonListCart6 = new ArrayList<Button>();
+        logout6 = new Button("Logout");
+        logout6.setOnMouseClicked(logoutHandler);
+        profile6 = new Button("Profile");
+        profile6.setOnMouseClicked(profileHandler);
+        menu6 = new Button("Menu");
+        menu6.setOnMouseClicked(menuViewHandler);
+
+        buttonListCart6.add(menu6);
+        buttonListCart6.add(profile6);
+        buttonListCart6.add(logout6);
+
+        ArrayList<Button> buttonListCheckout7 = new ArrayList<Button>();
+        logout7 = new Button("Logout");
+        logout7.setOnMouseClicked(logoutHandler);
+        profile7 = new Button("Profile");
+        profile7.setOnMouseClicked(profileHandler);
+        menu7 = new Button("Menu");
+        menu7.setOnMouseClicked(menuViewHandler);
+
+        buttonListCheckout7.add(menu7);
+        buttonListCheckout7.add(profile7);
+        buttonListCheckout7.add(logout7);
+
+
+
+
         ArrayList<Button> buttonListProfile8 = new ArrayList<Button>();
         logout8 = new Button("Logout");
         logout8.setOnMouseClicked(logoutHandler);
@@ -394,8 +893,36 @@ public class App extends Application{
         buttonListProfile8.add(menu8);
         buttonListProfile8.add(logout8);
 
+        ArrayList<Button> buttonListWait9 = new ArrayList<Button>();
+        logout9 = new Button("Logout");
+        logout9.setOnMouseClicked(logoutHandler);
+        buttonListWait9.add(logout9);
+
+        ArrayList<Button> buttonListEditItem10 = new ArrayList<Button>();
+        logout10 = new Button("Logout");
+        logout10.setOnMouseClicked(logoutHandler);
+        profile10 = new Button("Profile");
+        profile10.setOnMouseClicked(profileHandler);
+        orders10 = new Button("Orders");
+        orders10.setOnMouseClicked(ordersViewHandler);
+        buttonListEditItem10.add(logout10);
+        buttonListEditItem10.add(orders10);
+        buttonListEditItem10.add(profile10);
 
 
+        ArrayList<Button> buttonListOrder11 = new ArrayList<Button>();
+        logout11 = new Button("Logout");
+        logout11.setOnMouseClicked(logoutHandler);
+        profile11 = new Button("Profile");
+        profile11.setOnMouseClicked(profileHandler);
+        createItem11 = new Button("Create/Edit Item");
+        createItem11.setOnMouseClicked(editItemViewHandler);
+        createCoupon11 = new Button("Create Coupon");
+        // createCoupon11.setOnMouseClicked(couponViewHandler);
+        buttonListOrder11.add(logout11);
+        buttonListOrder11.add(profile11);
+        buttonListOrder11.add(createItem11);
+        buttonListOrder11.add(createCoupon11);
 
         // DUMMY DATA SECTION
         Customer ethan = new Customer("Ethan", "Joerz", "e", "", 0, "ejoerz@asu.edu", "1234567890");
@@ -416,40 +943,86 @@ public class App extends Application{
         dean.setPaymentInfo(deanPayment);
         Restaurant todd = new Restaurant("Todd", "Price", "tprice", "password4", 3, "Frozen Delight", 0);
 
-        Picture p1 = new Picture("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg", "Dummy picture");
-        Picture p2 = new Picture("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg", "Dummy picture");
-        Picture p3 = new Picture("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg", "Dummy picture");
-        Picture p4 = new Picture("/home/ejoerz/test/sample/src/main/java/org/openjfx/cake.jpeg", "Dummy picture");
+       
 
-        MenuItem m1 = new MenuItem("Item 1", p1, 10, 5, 1);
-        MenuItem m2 = new MenuItem("Item 2", p2, 13, 23, 0);
-        MenuItem m3 = new MenuItem("Item 3", p3, 15, 34, 1);
-        MenuItem m4 = new MenuItem("Item 4", p4, 18, 10, 2);
-        MenuItem m5 = new MenuItem("Item 5", p1, 10, 5, 1);
-        MenuItem m6 = new MenuItem("Item 6", p2, 13, 23, 0);
-        MenuItem m7 = new MenuItem("Item 7", p3, 15, 34, 1);
-        MenuItem m8 = new MenuItem("Item 8", p4, 18, 10, 2);
-        MenuItem m9 = new MenuItem("Item 9", p1, 10, 5, 1);
-        MenuItem m10 = new MenuItem("Item 10", p2, 13, 23, 0);
-        MenuItem m11 = new MenuItem("Item 11", p3, 15, 34, 1);
-        MenuItem m12 = new MenuItem("Item 12", p4, 18, 10, 2);
+        Picture p1 = new Picture(pwd + "frozenchocolatecake.jpeg", "Frozen Chocolate Mousse Cake");
+        Picture p2 = new Picture(pwd + "strawberrybananasmoothie.jpeg", "Strawberry Banana Smoothie");
+        Picture p3 = new Picture(pwd + "gelatoswirl.jpeg", "Gelato Swirl");
+        Picture p4 = new Picture(pwd + "mangosmoothie.jpeg", "Merry Mango Smoothie");
+        Picture p5 = new Picture(pwd + "sundaefunday.jpeg", "Sunday Fundae");
+        Picture p6 = new Picture(pwd + "cherrycherry.jpeg", "Cherry Cherry Ice Cream");
+        Picture p7 = new Picture(pwd + "peachysmoothie.jpg", "It's Quite Peachy Smoothie");
+        Picture p8 = new Picture(pwd + "cheesecake.jpeg", "No Bake Frozen Cheesecake");
+        Picture p9 = new Picture(pwd + "carameltopped.jpeg", "Caramel Topped Ice Cream Dessert");
+        Picture p10 = new Picture(pwd + "oreoicecreamcake.jpeg", "Oreo Ice Cream Cake");
+        Picture p11 = new Picture(pwd + "greenberrysmoothie.jpeg", "Green Berry Smoothie");
 
-        m1.addIngredient("Ingredient 1");
-        m1.addIngredient("Ingredient 1.5");
-        m1.addIngredient("Ingredient 2");
-        m1.addIngredient("Ingredient 3");
-        m1.addIngredient("Ingredient 4");
-        m1.addIngredient("Ingredient 5");
-        m1.addIngredient("Ingredient 6.5");
-        m1.addIngredient("Ingredient 7");
-        m1.addIngredient("Ingredient 8");
-        m1.addIngredient("Ingredient 9");
-        m1.addIngredient("Ingredient 10");
-        m1.addIngredient("Ingredient 11");
-        m1.addIngredient("Ingredient 12");
-        m1.addIngredient("Ingredient 13");
-        m1.addIngredient("Ingredient 14");
-        m1.addIngredient("Ingredient 15");
+        MenuItem m1 = new MenuItem("Frozen Chocolate Mousse Cake", p1, 10, 5, 0);
+        MenuItem m2 = new MenuItem("Strawberry banana smoothie", p2, 13, 23, 1);
+        MenuItem m3 = new MenuItem("Gelato swirl", p3, 15, 34, 2);
+        MenuItem m4 = new MenuItem("Merry mango smoothie", p4, 18, 10, 1);
+        MenuItem m5 = new MenuItem("Sundae funday", p5, 10, 5, 2);
+        MenuItem m6 = new MenuItem("Cherry Cherry ice cream", p6, 13, 23, 2);
+        MenuItem m7 = new MenuItem("It's quite peachy smoothie", p7, 15, 34, 1);
+        MenuItem m8 = new MenuItem("No bake frozen cheesecake", p8, 18, 10, 0);
+        MenuItem m9 = new MenuItem("Caramel topped ice cream dessert", p9, 10, 5, 2);
+        MenuItem m10 = new MenuItem("Oreo ice cream cake", p10, 13, 23, 0);
+        MenuItem m11 = new MenuItem("Green berry smoothie", p11, 15, 34, 1);
+
+        m1.addIngredient("dark chocolate");
+        m1.addIngredient("eggs");
+        m1.addIngredient("flour");
+        m1.addIngredient("strawberries");
+        m1.addIngredient("butter");
+        m2.addIngredient("strawberries");
+        m2.addIngredient("bananas");
+        m2.addIngredient("vanilla ice cream");
+        m2.addIngredient("milk");
+        m3.addIngredient("mint");
+        m3.addIngredient("milk chocolate");
+        m3.addIngredient("cream");
+        m3.addIngredient("sugar");
+        m4.addIngredient("mangos");
+        m4.addIngredient("milk");
+        m4.addIngredient("honey");
+        m5.addIngredient("vanilla ice cream");
+        m5.addIngredient("bananas");
+        m5.addIngredient("chocolate syrup");
+        m5.addIngredient("strawberry syrup");
+        m5.addIngredient("whip cream");
+        m6.addIngredient("cherries");
+        m6.addIngredient("dairy ice cream");
+        m6.addIngredient("chocolate syrup");
+        m7.addIngredient("peaches");
+        m7.addIngredient("coconut milk");
+        m7.addIngredient("peach yogurt");
+        m8.addIngredient("strawberries");
+        m8.addIngredient("blueberries");
+        m8.addIngredient("blackberries");
+        m8.addIngredient("butter");
+        m8.addIngredient("sugar");
+        m8.addIngredient("vanilla");
+        m8.addIngredient("lemon juice");
+        m8.addIngredient("cheesecake filling");
+        m8.addIngredient("cream cheese");
+        m8.addIngredient("graham cracker");
+        m9.addIngredient("cashews");
+        m9.addIngredient("shortbread cookies");
+        m9.addIngredient("chocolate");
+        m9.addIngredient("sugar");
+        m9.addIngredient("vanilla");
+        m9.addIngredient("milk");
+        m9.addIngredient("pretzel sticks");
+        m9.addIngredient("ice cream");
+        m9.addIngredient("caramel");
+        m10.addIngredient("oreos");
+        m10.addIngredient("oreo ice cream");
+        m10.addIngredient("fudge sauce");
+        m10.addIngredient("whipped cream");
+        m11.addIngredient("celery");
+        m11.addIngredient("avocado");
+        m11.addIngredient("rasberry");
+        m11.addIngredient("blueberry");
 
         System.out.println("Got to the start here 1");
 
@@ -464,15 +1037,39 @@ public class App extends Application{
         menuList.add(m9);
         menuList.add(m10);
         menuList.add(m11);
-        menuList.add(m12);
 
+        OrderItem o1 = new OrderItem(m1,"no strawberries", 1, 1, m1.getPrice());
+        OrderItem o2 = new OrderItem(m10,"none",2,2,m10.getPrice());
+        Order ethansOrder = new Order(1,ethan);
+        ethansOrder.addOrderItem(o1);
+        ethansOrder.addOrderItem(o2);
+
+        // System.out.println(o1.toString());
+        // System.out.println(o2.toString());
+
+
+        OrderItem o3 = new OrderItem(m3,"none",1,4,m3.getPrice());
+        Order johnsOrder = new Order(2, john);
+        johnsOrder.addOrderItem(o3);
+
+        OrderItem o4 = new OrderItem(m6,"none",1,1,m6.getPrice());
+        OrderItem o5 = new OrderItem(m9,"no pretzel sticks, no cashews", 2, 5, m9.getPrice());
+        OrderItem o6 = new OrderItem(m11,"none",1,1,m11.getPrice());
+        Order deansOrder = new Order(3,dean);
+        deansOrder.addOrderItem(o4);
+        deansOrder.addOrderItem(o5); 
+        deansOrder.addOrderItem(o6);
+
+        currentOrder = ethansOrder;
+
+        orders.add(deansOrder);
+        orders.add(johnsOrder);
         for (int i = 0; i < menuList.size(); i++){
             MenuItemMiniView temp = new MenuItemMiniView(menuList.get(i), 900, 700);
             menuItemMiniViewList.add(temp);
         }
         
 
-        System.out.println("Got to the start here 2");
 
         userList.add(ethan);
         userList.add(john);
@@ -485,25 +1082,47 @@ public class App extends Application{
 
 
 
-            InputStream in = new FileInputStream("/home/ejoerz/test/sample/src/main/java/org/openjfx/test.png");
+            InputStream in = new FileInputStream(pwd + "test.png");
             topLogo = new Image(in);
-            homeView = new HomeView(900, 700, buttonListHome1, "Frozen Delight Home Page", topLogo);
+            homeView = new HomeView(900, 700, buttonListHome1, "Frozen Delight Home Page", topLogo, pwd);
             
             
             
-            newProfileView = new NewProfileView(900, 700, buttonListNewProfile5, "Create New Account", topLogo);
+            newProfileView = new NewProfileView(900, 700, buttonListNewProfile5, "Create New Account", topLogo, pwd);
             newProfileView.createAccountButton.setOnMouseClicked(createAccountHandler);
             newProfileView.customerRadio.setOnMouseClicked(customerRadioHandler);
             newProfileView.restaurantRadio.setOnMouseClicked(restaurantRadioHandler);
 
-            profileView = new ProfileView(900, 700, buttonListProfile8, "User Profile", topLogo);
+            profileView = new ProfileView(900, 700, buttonListProfile8, "User Profile", topLogo, pwd);
             profileView.saveChanges.setOnMouseClicked(saveChangesToProfileHandler);
             profileView.editAccountInfo.setOnMouseClicked(editProfileInfoHandler);
 
-            loginView = new LoginView(900, 700, buttonListLogin4, "Log In", topLogo);
+            loginView = new LoginView(900, 700, buttonListLogin4, "Log In", topLogo, pwd);
             loginView.loginButton.setOnMouseClicked(loginHandler);
 
-            menuView = new MenuView(900, 700, buttonListMenu2, "Frozen Delight Menu", topLogo);
+            menuView = new MenuView(900, 700, buttonListMenu2, "Frozen Delight Menu", topLogo, pwd);
+
+            
+
+            cartView = new CartView(900, 700, buttonListCart6, "Cart", topLogo, currentOrder, pwd);
+            cartView.cancelOrderButton.setOnMouseClicked(cancelCartViewHandler);
+            cartView.checkOutButton.setOnMouseClicked(checkoutViewHandler);
+
+            checkOutView = new CheckoutView(900, 700, buttonListCheckout7, "Checkout", topLogo, currentOrder, pwd);
+
+            waitView = new waitTimeView(900, 700, buttonListWait9, "Checkout", topLogo, pwd);
+
+            orderView = new OrderView(900, 700, buttonListOrder11, "Orders", topLogo, pwd);
+
+            editItemView = new EditItemView(900, 700, buttonListEditItem10, "Edit Item", topLogo, pwd);
+            editItemView.searchGoButton.setOnMouseClicked(editItemSearchHandler);
+            editItemView.cakeRadioButton.setOnMouseClicked(cakeRadioButtonHandler);
+            editItemView.smoothieRadioButton.setOnMouseClicked(smoothieRadioButtonHandler);
+            editItemView.iceCreamRadioButton.setOnMouseClicked(iceCreamRadioButtonHandler);
+            editItemView.addNewItemButton.setOnMouseClicked(createNewItemButtonHandler);
+            editItemView.editExistingItemButton.setOnMouseClicked(editExistingItemButtonHandler);
+            editItemView.deleteItemButton.setOnMouseClicked(deleteItemButtonHandler);
+            editItemView.createItemButton.setOnMouseClicked(createNewItemHandler);
 
             homeView.menu.setOnMouseClicked(menuViewHandler);
 
@@ -511,8 +1130,9 @@ public class App extends Application{
             stage.show();
         }
         catch (Exception fileE) {
-            System.out.println("The File is not where you think it is");
+            System.out.println("The File is not where you think it is App");
             System.out.println(fileE.toString());
+            // System.out.println(fileE.getStackTrace()[0].getLineNumber());
             
         }
 
@@ -535,6 +1155,15 @@ public class App extends Application{
         }
     };
 
+
+    public int findItem(OrderItem item){
+        for (int i = 0; i < currentOrder.getOrderContents().size(); i++){
+            if (item == currentOrder.getOrderContents().get(i)){
+                return i;
+            }
+        }
+        return -1;
+    }
 
 
     public int findUserId(int newId){
@@ -562,6 +1191,15 @@ public class App extends Application{
                 if(((Customer)userList.get(i)).getEmail().equals(newEmail)){
                     return i;
                 }
+            }
+        }
+        return -1;
+    }
+
+    public int findMenuItem(String name){
+        for (int i = 0; i < menuList.size(); i++){
+            if(menuList.get(i).getName().equals(name)){
+                return i;
             }
         }
         return -1;

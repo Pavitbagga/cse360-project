@@ -1,3 +1,4 @@
+package org.openjfx;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -38,8 +39,8 @@ public class HomeView  extends BaseModel{
     HBox mainHbox2;
     HBox mainHbox3;
 
-    HomeView(int xSize, int ySize, ArrayList<Button> buttonList, String newPageTitle, Image newLogo){
-        super(xSize, ySize, buttonList, newPageTitle, newLogo);
+    HomeView(int xSize, int ySize, ArrayList<Button> buttonList, String newPageTitle, Image newLogo, String newPWD){
+        super(xSize, ySize, buttonList, newPageTitle, newLogo, newPWD);
 
         view = new GridPane();
 
@@ -101,7 +102,7 @@ public class HomeView  extends BaseModel{
 
 
         try{
-            InputStream cakeIn = new FileInputStream("/Users/12695/Documents/CSE360/src/cake.jpeg");
+            InputStream cakeIn = new FileInputStream(pwd + "cake.jpeg");
             cakeImage = new Image(cakeIn);
             cakeImageView = new ImageView(cakeImage);
 
@@ -109,7 +110,7 @@ public class HomeView  extends BaseModel{
             cakeImageView.setFitWidth(xSize*.25);
             cakeImageView.setPreserveRatio(true);
 
-            InputStream iceCreamIn = new FileInputStream("/Users/12695/Documents/CSE360/src/iceCream.jpg");
+            InputStream iceCreamIn = new FileInputStream(pwd + "iceCream.jpg");
             iceCreamImage = new Image(iceCreamIn);
             iceCreamImageView = new ImageView(iceCreamImage);
 
@@ -117,7 +118,7 @@ public class HomeView  extends BaseModel{
             iceCreamImageView.setFitWidth(xSize*.25);
             iceCreamImageView.setPreserveRatio(true);
 
-            InputStream smoothieIn = new FileInputStream("/Users/12695/Documents/CSE360/src/smoothie.jpeg");
+            InputStream smoothieIn = new FileInputStream(pwd + "smoothie.jpeg");
             smoothieImage = new Image(smoothieIn);
             smoothieImageView = new ImageView(smoothieImage);
             smoothieImageView.setPreserveRatio(true);

@@ -3,6 +3,8 @@
 // NewProfile allows user to create account with certain information,
 // such as name, location, contact, and payment.
 
+package org.openjfx;
+
 
 import javafx.scene.control.Button;
 
@@ -89,8 +91,8 @@ public class NewProfileView extends BaseModel{
 
 
 
-	public NewProfileView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
-		super(xSize, ySize, topButtons, newPageTitle, newLogo);
+	public NewProfileView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD) {
+		super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
 
 
 		grid = new GridPane();

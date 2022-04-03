@@ -1,3 +1,4 @@
+package org.openjfx;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -34,13 +35,17 @@ public class MenuItemView extends BaseModel{
     VBox sizing = new VBox();
     HBox textBox = new HBox();
     ScrollPane ingScroll;
-
+    MenuItem item;
     int buttonSelected;
+    int thisIndex;
 
-    public MenuItemView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, MenuItem newMenuItem) {
+    public MenuItemView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, MenuItem newMenuItem, int index, String newPWD) {
 
-        super(xSize, ySize, topButtons, newPageTitle, newLogo);
+        super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
+
+        thisIndex = index;
         
+        item = newMenuItem;
         
         
         buttonSelected = 0;
@@ -52,7 +57,7 @@ public class MenuItemView extends BaseModel{
         ingScroll = new ScrollPane();
         foodName = new Text("Food Item Name: " + newMenuItem.getName());
         amount = new Text("$   " + newMenuItem.getPrice());
-        quantity = new Text("     1     ");
+        quantity = new Text("1");
         ingredients = new Text("Ingredients:");
         ingredientsList = new Text();
         String s = "";

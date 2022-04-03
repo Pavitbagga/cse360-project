@@ -1,4 +1,5 @@
-import java.lang.*;
+package org.openjfx;
+
 import java.util.*;
 
 class Picture { 

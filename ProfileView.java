@@ -3,6 +3,9 @@
 // ProfileView shows user their account information, such as name, location, contact, and payment.
 // Also, it allows them to edit that information.
 
+package org.openjfx;
+
+
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -76,8 +79,8 @@ public class ProfileView extends BaseModel{
 	GridPane grid;
 
 
-	public ProfileView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
-		super(xSize, ySize, topButtons, newPageTitle, newLogo);
+	public ProfileView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD) {
+		super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
 
 
 		grid = new GridPane();
@@ -129,7 +132,7 @@ public class ProfileView extends BaseModel{
 		editAccountInfo = new Button("Edit Account Info");
 		saveChanges = new Button("Save Changes");
 
-		System.out.println("Gets to Here 1");
+		// System.out.println("Gets to Here 1");
 
 		c1 = new ColumnConstraints();
 		c2 = new ColumnConstraints();
@@ -174,7 +177,7 @@ public class ProfileView extends BaseModel{
 		r17.setPercentHeight(5.7);
 
 
-		System.out.println("Gets to Here 1.5");
+		// System.out.println("Gets to Here 1.5");
 
 		grid.getColumnConstraints().add(c1);
 		grid.getColumnConstraints().add(c2);
@@ -198,7 +201,7 @@ public class ProfileView extends BaseModel{
 		grid.getRowConstraints().add(r16);
 		grid.getRowConstraints().add(r17);
 
-		System.out.println("Gets to Here 2");
+		// System.out.println("Gets to Here 2");
 
 		grid.add(firstNameText, 0, 1);
 		grid.add(lastNameText, 0, 2);
@@ -217,7 +220,7 @@ public class ProfileView extends BaseModel{
 		grid.add(securityNumText, 0, 15);
 		grid.add(saveChanges, 0, 16);
 
-		System.out.println("Gets to Here 3");
+		// System.out.println("Gets to Here 3");
 
 		grid.add(firstNameTextField, 1, 1);
 		grid.add(lastNameTextField, 1, 2);
@@ -238,7 +241,7 @@ public class ProfileView extends BaseModel{
 
 
 
-		System.out.println("Gets to Here 4");
+
 
 
 
@@ -332,6 +335,9 @@ public class ProfileView extends BaseModel{
         cardNumTextField.setVisible(true);
         cardExpDateTextField.setVisible(true);
         securityNumTextField.setVisible(true);
+
+		saveChanges.setVisible(false);
+        editAccountInfo.setVisible(false);
 
 
 	}

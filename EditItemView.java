@@ -1,9 +1,11 @@
+package org.openjfx;
+
+
 import java.util.ArrayList;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -17,11 +19,12 @@ public class EditItemView extends BaseModel {
     Button editExistingItemButton;
     Button searchGoButton;
     Button createItemButton;
+    Button deleteItemButton;
     TextField searchBar;
     Group categoryGroup;
-    RadioButton cakeRadioButton;
-    RadioButton smoothieRadioButton;
-    RadioButton iceCreamRadioButton;
+    Button cakeRadioButton;
+    Button smoothieRadioButton;
+    Button iceCreamRadioButton;
     Text foodItemNameText;
     TextField foodItemNewName;
     Text ingredientListText;
@@ -55,21 +58,31 @@ public class EditItemView extends BaseModel {
 
     VBox wholeView;
 
-    public EditItemView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
+    MenuItem item;
+    
+    int selectedMode;
+    int selectedCategory;
 
-        super(xSize, ySize, topButtons, newPageTitle, newLogo);
+    public EditItemView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD) {
+
+        super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
+        item = new MenuItem("", new Picture("cake.jpeg", "cake"), -1, -1, -1);
+
+        selectedCategory = 0;
+        selectedMode = 0;
 
         wholeView = new VBox();
 
         addNewItemButton = new Button("Add new item");
+        deleteItemButton = new Button("Delete Item");
         editExistingItemButton = new Button("Edit existing item");
         searchGoButton = new Button("Go");
         createItemButton = new Button("Create item");
         searchBar = new TextField();
         categoryGroup = new Group();
-        cakeRadioButton = new RadioButton("Cake");
-        smoothieRadioButton = new RadioButton("Smoothie");
-        iceCreamRadioButton = new RadioButton("Ice cream");
+        cakeRadioButton = new Button("Cake");
+        smoothieRadioButton = new Button("Smoothie");
+        iceCreamRadioButton = new Button("Ice cream");
         foodItemNameText = new Text();
         foodItemNewName = new TextField();
         ingredientListText = new Text();
@@ -114,20 +127,24 @@ public class EditItemView extends BaseModel {
 
         foodItemNameText.setText("Food Item Name: ");
         ingredientListText.setText("Ingredients List: ");
-        foodTagsText.setText("Food Tags List: ");
+        foodTagsText.setText("Picture URL: ");
         priceText.setText("Price: ");
         prepTimeText.setText("Prep Time: ");
 
-        addEditButtonsHBox.getChildren().addAll(addNewItemButton,editExistingItemButton);
+        addEditButtonsHBox.getChildren().addAll(addNewItemButton,editExistingItemButton, deleteItemButton);
         searchGoHBox.getChildren().addAll(searchBar,searchGoButton);
         radioButtonsHBox.getChildren().addAll(cakeRadioButton,iceCreamRadioButton,smoothieRadioButton);
         foodItemNameHBox.getChildren().addAll(foodItemNameText,foodItemNewName);
         ingredientsListHBox.getChildren().addAll(ingredientListText,ingredientListTextField);
         foodTagsListHbox.getChildren().addAll(foodTagsText,foodTagsTextField);
 
-        cakeRadioButton.setToggleGroup(radioToggle);
-        smoothieRadioButton.setToggleGroup(radioToggle);
-        iceCreamRadioButton.setToggleGroup(radioToggle);
+        cakeRadioButton.setStyle("-fx-background-color: #00FF00");
+        smoothieRadioButton.setStyle("");
+        iceCreamRadioButton.setStyle("");
+        
+        editExistingItemButton.setStyle("-fx-background-color: #00FF00");
+        createItemButton.setStyle("");
+        deleteItemButton.setStyle("");
 
         leftVBox.getChildren().addAll(addEditButtonsHBox,searchGoHBox,radioButtonsHBox,foodItemNameHBox,ingredientsListHBox,foodTagsListHbox);
 
@@ -141,6 +158,28 @@ public class EditItemView extends BaseModel {
         wholeView.getChildren().addAll(contentHBox);
 
         this.mainView.add(wholeView, 0, 1);
+
+
+    }
+
+    public void removeAllFields(){
+        foodTagsTextField.setText("");
+        searchBar.setText("");
+        foodItemNewName.setText("");
+        ingredientListTextField.setText("");
+        foodTagsTextField.setText("");
+        newPriceTextField.setText("");
+        prepTimeTextField.setText("");
+
+        foodTagsTextField.setEditable(true);
+        searchBar.setEditable(true);
+        foodItemNewName.setEditable(true);
+        ingredientListTextField.setEditable(true);
+        foodTagsTextField.setEditable(true);
+        newPriceTextField.setEditable(true);
+        prepTimeTextField.setEditable(true);
+        item = new MenuItem("", new Picture("", ""), -1, -1, -1);
+
 
 
     }

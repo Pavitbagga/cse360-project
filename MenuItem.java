@@ -1,5 +1,6 @@
+package org.openjfx;
 
-import java.lang.*;
+
 import java.util.*;
 
 class MenuItem{
@@ -20,6 +21,11 @@ class MenuItem{
         this.prepTime = newPrepTime;
         this.category = newCategory;
     }
+
+    public void setName(String newName){
+        this.name = newName;
+    }
+
     public void setPictureDescription (String description){
         pic.setAlternativeText(description);
     }

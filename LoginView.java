@@ -1,3 +1,4 @@
+package org.openjfx;
 
 // Coded by Katelyn Vanderwolde
 // Last Modified 3/28/22
@@ -35,8 +36,8 @@ public class LoginView extends BaseModel{
 	HBox mainHBox2;
 	HBox mainHBox3;
 
-	public LoginView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
-		super(xSize, ySize, topButtons, newPageTitle, newLogo); 
+	public LoginView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD) {
+		super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
 		
 		// Whole Login Page
 		wholeView = new VBox();

@@ -1,3 +1,4 @@
+package org.openjfx;
 
 import java.util.ArrayList;
 
@@ -25,12 +26,15 @@ public class BaseModel extends Scene{
     public ArrayList<RowConstraints> rows;
     public VBox topLogoBox;
     public Text pageTitle;
+    public String pwd;
 
-    BaseModel(int xSize, int ySize, ArrayList<Button> buttonList, String newPageTitle, Image newLogo) {
+    BaseModel(int xSize, int ySize, ArrayList<Button> buttonList, String newPageTitle, Image newLogo, String newPWD) {
         
         
         // Calls constructor for Scene, initializing with new GridPane as the root node in the node tree
         super(new GridPane(), xSize, ySize, Color.web("FFFFFF"));
+
+        pwd = newPWD;
         
         // Takes the GridPane called in the super constructor and assigns mainView attribute to it for manipulation purposes
         mainView = (GridPane) super.getRoot();
