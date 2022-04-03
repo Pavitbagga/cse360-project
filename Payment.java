@@ -1,5 +1,8 @@
+package org.openjfx;
 
-public class Payment {
+import java.io.Serializable;
+
+public class Payment  implements Serializable{
 
     String cardNum;
     Address billingAddress;

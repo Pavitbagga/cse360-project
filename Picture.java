@@ -1,7 +1,9 @@
+package org.openjfx;
 
+import java.io.Serializable;
 import java.util.*;
 
-class Picture { 
+class Picture  implements Serializable{ 
     private String url;
     private String alternativeText;
   

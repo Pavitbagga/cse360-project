@@ -1,9 +1,11 @@
+package org.openjfx;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Coupon 
+public class Coupon  implements Serializable
 {
 	private int percentOff;
 	private String expiration;

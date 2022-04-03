@@ -1,9 +1,10 @@
 package org.openjfx;
 
 
+import java.io.Serializable;
 import java.util.*;
 
-class MenuItem{
+class MenuItem implements Serializable{
     private String name;
     private Picture pic;
     private ArrayList <String> ingredient;

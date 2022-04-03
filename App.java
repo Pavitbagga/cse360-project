@@ -1,9 +1,13 @@
+package org.openjfx;
 
 
 
 import javafx.event.EventHandler;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
 import javafx.application.Application;
@@ -792,7 +796,24 @@ public class App extends Application{
     public void start(Stage stage) {
         this.stage = stage;
 
-        nextOrderNumber = 2;
+        // nextOrderNumber = 2;
+        SaveState tempIn = null;
+        try{
+            FileInputStream fileIn = new FileInputStream(pwd + "tempFile.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            tempIn = (SaveState) in.readObject();
+            in.close();
+            fileIn.close();
+
+            nextOrderNumber = tempIn.nextOrderNumber;
+            userList = tempIn.getUserList();
+            menuList = tempIn.getMenuList();
+            orders = tempIn.getOrderList();
+            currentUserIDToAssign = tempIn.getCurrentUserIDtoAssign();
+
+        }catch(Exception e4){
+            e4.printStackTrace();
+        }
 
         guest = new Customer("Guest", "Guest", "guest", "", -1, "", "");
         Address guestAddress = new Address("", "", "", "", "", "");
@@ -801,16 +822,16 @@ public class App extends Application{
         guest.setPaymentInfo(guestPayment);
 
 
-        orders = new ArrayList<Order>();
+        // orders = new ArrayList<Order>();
 
         currentOrder = new Order(-2, guest);
 
-        userList = new ArrayList<User>();
+        // userList = new ArrayList<User>();
 
-        menuList = new ArrayList<MenuItem>();
+        // menuList = new ArrayList<MenuItem>();
         menuItemMiniViewList = new ArrayList<MenuItemMiniView>();
 
-        currentUserIDToAssign = userList.size();
+        // currentUserIDToAssign = userList.size();
         currentUserLoggedIn = -1;
 
         ArrayList<Button> buttonListHome1 = new ArrayList<Button>();
@@ -1025,17 +1046,17 @@ public class App extends Application{
 
         System.out.println("Got to the start here 1");
 
-        menuList.add(m1);
-        menuList.add(m2);
-        menuList.add(m3);
-        menuList.add(m4);
-        menuList.add(m5);
-        menuList.add(m6);
-        menuList.add(m7);
-        menuList.add(m8);
-        menuList.add(m9);
-        menuList.add(m10);
-        menuList.add(m11);
+        // menuList.add(m1);
+        // menuList.add(m2);
+        // menuList.add(m3);
+        // menuList.add(m4);
+        // menuList.add(m5);
+        // menuList.add(m6);
+        // menuList.add(m7);
+        // menuList.add(m8);
+        // menuList.add(m9);
+        // menuList.add(m10);
+        // menuList.add(m11);
 
         OrderItem o1 = new OrderItem(m1,"no strawberries", 1, 1, m1.getPrice());
         OrderItem o2 = new OrderItem(m10,"none",2,2,m10.getPrice());
@@ -1059,10 +1080,10 @@ public class App extends Application{
         deansOrder.addOrderItem(o5); 
         deansOrder.addOrderItem(o6);
 
-        currentOrder = ethansOrder;
+        // currentOrder = ethansOrder;
 
-        orders.add(deansOrder);
-        orders.add(johnsOrder);
+        // orders.add(deansOrder);
+        // orders.add(johnsOrder);
         for (int i = 0; i < menuList.size(); i++){
             MenuItemMiniView temp = new MenuItemMiniView(menuList.get(i), 900, 700);
             menuItemMiniViewList.add(temp);
@@ -1070,12 +1091,12 @@ public class App extends Application{
         
 
 
-        userList.add(ethan);
-        userList.add(john);
-        userList.add(dean);
-        userList.add(todd);
+        // userList.add(ethan);
+        // userList.add(john);
+        // userList.add(dean);
+        // userList.add(todd);
 
-        currentUserIDToAssign = 4;
+        // currentUserIDToAssign = 4;
         
         try {
 
@@ -1146,6 +1167,24 @@ public class App extends Application{
     }
 
     // Everything below here is a basic utility method for quick debugging that won't be in the final version, or event handlers that I wrote based on a quick mockup that I did that I plan on reusing and don't want to have to figure out how to write again, but won't compile properly without all the other classes
+
+    @Override
+    public void stop(){
+        
+        SaveState tempSave = new SaveState(orders, userList, menuList, nextOrderNumber, currentUserIDToAssign);
+        try{
+            FileOutputStream fileOut = new FileOutputStream(pwd + "tempFile.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(tempSave);
+            out.close();
+            System.out.println("This should execute when stopped");
+        }
+        catch(Exception e3){
+            e3.printStackTrace();
+        }
+        
+
+    }
 
 
     EventHandler<MouseEvent> currentHandler = new EventHandler<MouseEvent>() {

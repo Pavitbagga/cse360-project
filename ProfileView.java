@@ -3,6 +3,7 @@
 // ProfileView shows user their account information, such as name, location, contact, and payment.
 // Also, it allows them to edit that information.
 
+package org.openjfx;
 
 
 import javafx.scene.control.Button;

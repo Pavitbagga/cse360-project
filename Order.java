@@ -1,7 +1,9 @@
+package org.openjfx;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Order {
+public class Order implements Serializable {
     private int orderNum;
     private Customer orderer;
     private ArrayList<OrderItem> orderContents = new ArrayList<>();

@@ -1,9 +1,11 @@
 // Coded by Ethan Joerz
 // Last modified 3/12/22
 // Basic storage class for saving addresses
+package org.openjfx;
 
+import java.io.Serializable;
 
-public class Address {
+public class Address implements Serializable {
 
     private String streetAddressLine1;
     private String streetAddressLine2;

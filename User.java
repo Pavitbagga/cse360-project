@@ -2,9 +2,11 @@
 // Last Modified 3/14/22
 // Basic storage class for saving user
 
+package org.openjfx;
 
+import java.io.Serializable;
 
-public class User {
+public class User  implements Serializable{
 	
 	protected String firstName; 
 	protected String lastName;

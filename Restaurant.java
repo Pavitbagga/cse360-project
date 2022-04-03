@@ -1,3 +1,4 @@
+package org.openjfx;
 
 public class Restaurant extends User{
     String restaurantName;

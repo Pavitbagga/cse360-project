@@ -1,5 +1,8 @@
+package org.openjfx;
 
-public class OrderItem {
+import java.io.Serializable;
+
+public class OrderItem  implements Serializable{
 
     private MenuItem item;
     private String specialInstructions;
