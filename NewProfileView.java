@@ -3,7 +3,7 @@
 // NewProfile allows user to create account with certain information,
 // such as name, location, contact, and payment.
 
-package org.openjfx;
+
 
 
 import javafx.scene.control.Button;

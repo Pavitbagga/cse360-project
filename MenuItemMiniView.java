@@ -1,4 +1,4 @@
-package org.openjfx;
+
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -18,13 +18,16 @@ public class MenuItemMiniView extends GridPane {
     Text menuName;
     Button menuButton;
     MenuItem innerMenuItem;
+    String pwd;
 
 
-    MenuItemMiniView(MenuItem newItem, int xSize, int ySize){
+    MenuItemMiniView(MenuItem newItem, int xSize, int ySize, String newPWD){
         menuImage = new ImageView();
         menuName = new Text();
         menuButton = new Button("View Item");
         innerMenuItem = newItem;
+
+        this.pwd = newPWD;
         
         menuName.setText(newItem.getName());
         
@@ -51,7 +54,7 @@ public class MenuItemMiniView extends GridPane {
 
 
         try{
-            InputStream in = new FileInputStream(newItem.getPicture().getUrl());
+            InputStream in = new FileInputStream(pwd + newItem.getPicture().getUrl());
             Image menuImg = new Image(in);
             menuImage.setImage(menuImg);
             menuImage.setFitHeight(this.getPrefHeight()*0.95);

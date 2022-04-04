@@ -1,4 +1,3 @@
-package org.openjfx;
 
 import java.io.Serializable;
 import java.util.ArrayList;

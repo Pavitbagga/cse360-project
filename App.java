@@ -1,4 +1,3 @@
-package org.openjfx;
 
 
 
@@ -9,12 +8,16 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.scene.text.Text;
 
 /**
  * This is a basic skeleton to test running classes for now, will alter to make final project properly
@@ -22,6 +25,7 @@ import javafx.stage.Stage;
 public class App extends Application{
 
     int currentUserIDToAssign;
+    int currentCouponNum;
     int currentUserLoggedIn;
     ArrayList<User> userList;
     ArrayList<Order> orders;
@@ -40,7 +44,8 @@ public class App extends Application{
     waitTimeView waitView; 
     EditItemView editItemView;
     OrderView orderView;
-    // CouponView couponView;
+    CouponView couponView;
+    String currentCoupon;
 
     Customer guest;
 
@@ -104,9 +109,9 @@ public class App extends Application{
     Button logout11;
 
     // CouponView
-    // Button profile12;
-    // Button orders12;
-    // Button logout12;
+    Button profile12;
+    Button orders12;
+    Button logout12;
     
 
     
@@ -218,10 +223,7 @@ public class App extends Application{
                         goToMenuView();
                     }
                     else if (userList.get(userIndex).getClass() == Restaurant.class){
-                        orderView.removeAllOrders();
-                        orderView.addAllOrders(orders);
-                        stage.setScene(orderView);
-                        stage.show();
+                        setOrderView();
                     }
                     currentUserLoggedIn = userList.get(userIndex).getUserId();
                 }
@@ -245,6 +247,9 @@ public class App extends Application{
             }
             else{
                 profileView.addAllFieldsToProfile(userList.get(findUserId(currentUserLoggedIn)));
+                for(int i = 0; i < profileView.overallBox.getChildren().size(); i++){
+                    ((Button)((HBox)profileView.overallBox.getChildren().get(i)).getChildren().get(4)).setOnMouseClicked(useCurrentCouponHandler);
+                }
             }
             
             stage.setScene(profileView);
@@ -545,14 +550,18 @@ public class App extends Application{
         public void handle(MouseEvent e) {
             
             checkOutView.removeAllItems();
-            checkOutView.addAllItemsToCart(currentOrder);
+            
             if(currentUserLoggedIn == -1) {
+                checkOutView.addAllItemsToCart(currentOrder, guest);
                 checkOutView.firstNameTextField.setText("Enter First Name");
                 checkOutView.lastNameTextField.setText("Enter Last Name");
                 checkOutView.addressLine1Text.setText("Enter Address Line 1");
                 checkOutView.addressLine2Text.setText("Enter Address Line 2");
                 
 
+            }
+            else{
+                checkOutView.addAllItemsToCart(currentOrder, userList.get(findUserId(currentUserLoggedIn)));
             }
             
             checkOutView.editCartButton.setOnMouseClicked(cartViewHandler);
@@ -605,12 +614,38 @@ public class App extends Application{
     EventHandler<MouseEvent> ordersViewHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
             
-            orderView.removeAllOrders();
-            orderView.addAllOrders(orders);
-            stage.setScene(orderView);
-            stage.show();
+           setOrderView();
         }
     };
+
+    EventHandler<MouseEvent> cancelOrderHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            System.out.println("cancelOrderHandler was clicked");
+            int tempIndex = findOrder(((OrderItemView)((Button)e.getSource()).getParent()).item);
+            if(tempIndex > -1){
+                orders.remove(tempIndex);
+            }
+            else{
+                System.out.println("Somehow the cancelOrderHandler is wrong (Line 620)");
+            }
+            
+            setOrderView();
+        }
+    };
+
+    public void setOrderView(){
+        orderView.removeAllOrders();
+            orderView.addAllOrders(orders);
+            for(int i = 0; i < orderView.orderVbox.getChildren().size(); i++){
+                ((OrderItemView)(orderView.orderVbox.getChildren().get(i))).cancel.setOnMouseClicked(cancelOrderHandler);
+                ((OrderItemView)(orderView.orderVbox.getChildren().get(i))).markAsComplete.setOnMouseClicked(cancelOrderHandler);
+            }
+
+            stage.setScene(orderView);
+            stage.show();
+    }
+
+
 
     EventHandler<MouseEvent> editItemViewHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
@@ -638,6 +673,7 @@ public class App extends Application{
                 editItemView.prepTimeTextField.setText("" + editItemView.item.getPrepTime());
                 editItemView.newPriceTextField.setText("" + editItemView.item.getPrice());
                 editItemView.selectedCategory = editItemView.item.getCategory();
+                editItemView.foodTagsTextField.setText(editItemView.item.getPicture().getUrl());
                 
                 if(editItemView.selectedCategory == 0){
                     editItemView.cakeRadioButton.setStyle("-fx-background-color: #00FF00");
@@ -744,7 +780,7 @@ public class App extends Application{
                                 InputStream in = new FileInputStream(pwd + editItemView.foodTagsTextField.getText());
                                 Image menuImg = new Image(in);
                                 menuItemMiniViewList.get(i).menuImage.setImage(menuImg);
-                                menuList.get(tempIndex).getPicture().setUrl(pwd + editItemView.foodTagsTextField.getText());
+                                menuList.get(tempIndex).getPicture().setUrl(editItemView.foodTagsTextField.getText());
                                 editItemView.ingredientListTextField.setText("Picture Succesful");
                             }
                             catch(Exception e2){
@@ -761,7 +797,7 @@ public class App extends Application{
                 MenuItem temp = new MenuItem(editItemView.foodItemNewName.getText(), new Picture(editItemView.foodTagsTextField.getText(), ""), Integer.parseInt(editItemView.newPriceTextField.getText()), Integer.parseInt(editItemView.prepTimeTextField.getText()), editItemView.selectedCategory);
 
                 menuList.add(temp);
-                MenuItemMiniView temp2 = new MenuItemMiniView(temp, 900, 700);
+                MenuItemMiniView temp2 = new MenuItemMiniView(temp, 900, 700, pwd);
                 menuItemMiniViewList.add(temp2);
                 System.out.println("Created");
             }
@@ -782,6 +818,97 @@ public class App extends Application{
         }
     };
 
+    EventHandler<MouseEvent> couponViewHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            couponView.giveCoupon.setOnMouseClicked(giveCouponHandler);
+            couponView.enterName.setEditable(false);
+            couponView.giveCoupon.setDisable(true);
+            couponView.enterName.setText("");
+            couponView.enterPercent.setText("");
+            
+            stage.setScene(couponView);
+            stage.show();
+
+        }
+    };
+
+    EventHandler<MouseEvent> couponSearchBarHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+            int tempIndex = findUserName(couponView.searchbar.getText());
+            couponView.enterPercent.setText("");
+            if(tempIndex > -1){
+                if(userList.get(tempIndex).getClass() == Customer.class){
+                    couponView.enterName.setText(userList.get(tempIndex).userName);
+                    couponView.giveCoupon.setDisable(false);
+                    
+                }
+                else{
+                    couponView.enterName.setText("Not a customer");
+                }
+               
+            }
+            else{
+                couponView.enterName.setText("Try Again");
+                
+            }
+
+
+        }
+    };
+
+    EventHandler<MouseEvent> giveCouponHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            
+            int tempIndex = findUserName(couponView.enterName.getText());
+            if(tempIndex > -1){
+                String tempString = "";
+                int random;
+                Random rand = new Random();
+                for(int i = 0; i < 4; i++){
+                    random = rand.nextInt(25);
+                    random += 97;
+                    tempString += Character.toString(random);
+                }
+                tempString += currentCouponNum;
+                for(int i = 0; i < 4; i++){
+                    random = rand.nextInt(25);
+                    random += 97;
+                    tempString += Character.toString(random);
+                }
+
+                Coupon tempCoupon = new Coupon(Integer.parseInt(couponView.enterPercent.getText()), "", tempString);
+                ((Customer)userList.get(tempIndex)).setCoupon(tempCoupon);
+                currentCouponNum ++;
+                couponView.enterName.setText("");
+                couponView.enterPercent.setText("");
+                couponView.giveCoupon.setDisable(true);
+            }
+            
+        }
+    };
+
+    EventHandler<MouseEvent> useCurrentCouponHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            System.out.println("Using a coupon");
+
+            currentCoupon = ((Text)((HBox)((Button)e.getSource()).getParent()).getChildren().get(1)).getText();
+
+        }
+    };
+
+    EventHandler<MouseEvent> cancelCheckoutOrderHandler = new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent e) {
+            currentOrder = new Order(nextOrderNumber, guest);
+            goToMenuView();
+
+        }
+    };
+
+
+
+    
+
     
 
 
@@ -796,7 +923,8 @@ public class App extends Application{
     public void start(Stage stage) {
         this.stage = stage;
 
-        // nextOrderNumber = 2;
+        currentCoupon = "";
+        nextOrderNumber = 2;
         SaveState tempIn = null;
         try{
             FileInputStream fileIn = new FileInputStream(pwd + "tempFile.ser");
@@ -810,6 +938,7 @@ public class App extends Application{
             menuList = tempIn.getMenuList();
             orders = tempIn.getOrderList();
             currentUserIDToAssign = tempIn.getCurrentUserIDtoAssign();
+            currentCouponNum = tempIn.getCurrentCouponNum();
 
         }catch(Exception e4){
             e4.printStackTrace();
@@ -821,7 +950,7 @@ public class App extends Application{
         Payment guestPayment = new Payment("", guestAddress, "", "");
         guest.setPaymentInfo(guestPayment);
 
-
+        // currentCouponNum = 10;
         // orders = new ArrayList<Order>();
 
         currentOrder = new Order(-2, guest);
@@ -938,11 +1067,22 @@ public class App extends Application{
         createItem11 = new Button("Create/Edit Item");
         createItem11.setOnMouseClicked(editItemViewHandler);
         createCoupon11 = new Button("Create Coupon");
-        // createCoupon11.setOnMouseClicked(couponViewHandler);
+        createCoupon11.setOnMouseClicked(couponViewHandler);
         buttonListOrder11.add(logout11);
         buttonListOrder11.add(profile11);
         buttonListOrder11.add(createItem11);
         buttonListOrder11.add(createCoupon11);
+
+        ArrayList<Button> buttonListCoupon12 = new ArrayList<Button>();
+        logout12 = new Button("Logout");
+        logout12.setOnMouseClicked(logoutHandler);
+        profile12 = new Button("Profile");
+        profile12.setOnMouseClicked(profileHandler);
+        orders12 = new Button("Orders");
+        orders12.setOnMouseClicked(ordersViewHandler);
+        buttonListCoupon12.add(logout12);
+        buttonListCoupon12.add(orders12);
+        buttonListCoupon12.add(profile12);
 
         // DUMMY DATA SECTION
         Customer ethan = new Customer("Ethan", "Joerz", "e", "", 0, "ejoerz@asu.edu", "1234567890");
@@ -965,17 +1105,17 @@ public class App extends Application{
 
        
 
-        Picture p1 = new Picture(pwd + "frozenchocolatecake.jpeg", "Frozen Chocolate Mousse Cake");
-        Picture p2 = new Picture(pwd + "strawberrybananasmoothie.jpeg", "Strawberry Banana Smoothie");
-        Picture p3 = new Picture(pwd + "gelatoswirl.jpeg", "Gelato Swirl");
-        Picture p4 = new Picture(pwd + "mangosmoothie.jpeg", "Merry Mango Smoothie");
-        Picture p5 = new Picture(pwd + "sundaefunday.jpeg", "Sunday Fundae");
-        Picture p6 = new Picture(pwd + "cherrycherry.jpeg", "Cherry Cherry Ice Cream");
-        Picture p7 = new Picture(pwd + "peachysmoothie.jpg", "It's Quite Peachy Smoothie");
-        Picture p8 = new Picture(pwd + "cheesecake.jpeg", "No Bake Frozen Cheesecake");
-        Picture p9 = new Picture(pwd + "carameltopped.jpeg", "Caramel Topped Ice Cream Dessert");
-        Picture p10 = new Picture(pwd + "oreoicecreamcake.jpeg", "Oreo Ice Cream Cake");
-        Picture p11 = new Picture(pwd + "greenberrysmoothie.jpeg", "Green Berry Smoothie");
+        Picture p1 = new Picture("frozenchocolatecake.jpeg", "Frozen Chocolate Mousse Cake");
+        Picture p2 = new Picture("strawberrybananasmoothie.jpeg", "Strawberry Banana Smoothie");
+        Picture p3 = new Picture("gelatoswirl.jpeg", "Gelato Swirl");
+        Picture p4 = new Picture("mangosmoothie.jpeg", "Merry Mango Smoothie");
+        Picture p5 = new Picture("sundaefunday.jpeg", "Sunday Fundae");
+        Picture p6 = new Picture("cherrycherry.jpeg", "Cherry Cherry Ice Cream");
+        Picture p7 = new Picture("peachysmoothie.jpg", "It's Quite Peachy Smoothie");
+        Picture p8 = new Picture("cheesecake.jpeg", "No Bake Frozen Cheesecake");
+        Picture p9 = new Picture("carameltopped.jpeg", "Caramel Topped Ice Cream Dessert");
+        Picture p10 = new Picture("oreoicecreamcake.jpeg", "Oreo Ice Cream Cake");
+        Picture p11 = new Picture("greenberrysmoothie.jpeg", "Green Berry Smoothie");
 
         MenuItem m1 = new MenuItem("Frozen Chocolate Mousse Cake", p1, 10, 5, 0);
         MenuItem m2 = new MenuItem("Strawberry banana smoothie", p2, 13, 23, 1);
@@ -1085,7 +1225,7 @@ public class App extends Application{
         // orders.add(deansOrder);
         // orders.add(johnsOrder);
         for (int i = 0; i < menuList.size(); i++){
-            MenuItemMiniView temp = new MenuItemMiniView(menuList.get(i), 900, 700);
+            MenuItemMiniView temp = new MenuItemMiniView(menuList.get(i), 900, 700, pwd);
             menuItemMiniViewList.add(temp);
         }
         
@@ -1129,6 +1269,9 @@ public class App extends Application{
             cartView.checkOutButton.setOnMouseClicked(checkoutViewHandler);
 
             checkOutView = new CheckoutView(900, 700, buttonListCheckout7, "Checkout", topLogo, currentOrder, pwd);
+            checkOutView.logInButton.setOnMouseClicked(loginButtonHandler);
+            checkOutView.cancelOrderButton.setOnMouseClicked(cancelCheckoutOrderHandler);
+
 
             waitView = new waitTimeView(900, 700, buttonListWait9, "Checkout", topLogo, pwd);
 
@@ -1143,6 +1286,10 @@ public class App extends Application{
             editItemView.editExistingItemButton.setOnMouseClicked(editExistingItemButtonHandler);
             editItemView.deleteItemButton.setOnMouseClicked(deleteItemButtonHandler);
             editItemView.createItemButton.setOnMouseClicked(createNewItemHandler);
+
+            couponView = new CouponView(900, 700, buttonListCoupon12, "Coupons", topLogo, pwd);
+            couponView.giveCoupon.setOnMouseClicked(giveCouponHandler);
+            couponView.goButton.setOnMouseClicked(couponSearchBarHandler);
 
             homeView.menu.setOnMouseClicked(menuViewHandler);
 
@@ -1171,7 +1318,7 @@ public class App extends Application{
     @Override
     public void stop(){
         
-        SaveState tempSave = new SaveState(orders, userList, menuList, nextOrderNumber, currentUserIDToAssign);
+        SaveState tempSave = new SaveState(orders, userList, menuList, nextOrderNumber, currentUserIDToAssign, currentCouponNum);
         try{
             FileOutputStream fileOut = new FileOutputStream(pwd + "tempFile.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -1201,6 +1348,17 @@ public class App extends Application{
             }
         }
         return -1;
+
+    }
+
+    public int findOrder(Order item){
+        for (int i = 0; i < orders.size(); i++){
+            if (item == orders.get(i)){
+                return i;
+            }
+        }
+        return -1;
+
     }
 
 

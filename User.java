@@ -2,7 +2,7 @@
 // Last Modified 3/14/22
 // Basic storage class for saving user
 
-package org.openjfx;
+
 
 import java.io.Serializable;
 

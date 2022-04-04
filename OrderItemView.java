@@ -1,4 +1,4 @@
-package org.openjfx;
+
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -25,6 +25,8 @@ public class OrderItemView extends GridPane{
 
     ScrollPane itemsScroll;
     VBox itemsBox;
+
+    Order item;
 
 
 
@@ -65,6 +67,8 @@ public class OrderItemView extends GridPane{
         this.getRowConstraints().add(r1);
         this.getRowConstraints().add(r2);
         this.getRowConstraints().add(r3);
+
+        item = newOrder;
 
 
         customerNameLabel = new Text("Customer Name: ");

@@ -1,4 +1,4 @@
-package org.openjfx;
+
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -120,7 +120,7 @@ public class MenuItemView extends BaseModel{
         sizing.setAlignment(Pos.CENTER);
 
         try{
-            InputStream in = new FileInputStream(newMenuItem.getPicture().getUrl());
+            InputStream in = new FileInputStream(pwd + newMenuItem.getPicture().getUrl());
             foodItem = new Image(in);
             food = new ImageView();
             food.setImage(foodItem);

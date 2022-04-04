@@ -3,15 +3,17 @@
 // ProfileView shows user their account information, such as name, location, contact, and payment.
 // Also, it allows them to edit that information.
 
-package org.openjfx;
 
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -78,12 +80,21 @@ public class ProfileView extends BaseModel{
 
 	GridPane grid;
 
+	VBox overallBox;
+
+	ScrollPane scroll;
+
 
 	public ProfileView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD) {
 		super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
 
 
 		grid = new GridPane();
+
+		overallBox = new VBox();
+
+		scroll = new ScrollPane();
+		scroll.setContent(grid);
 
 		// Initialized Text
 		firstNameText = new Text("First Name: ");
@@ -238,6 +249,9 @@ public class ProfileView extends BaseModel{
 		grid.add(cardExpDateTextField, 1, 14);
 		grid.add(securityNumTextField, 1, 15);
 		grid.add(editAccountInfo, 1, 16);
+		grid.add(overallBox, 1, 17);
+
+		
 
 
 
@@ -247,7 +261,7 @@ public class ProfileView extends BaseModel{
 
 
 
-		this.mainView.add(grid, 0, 1);
+		this.mainView.add(scroll, 0, 1);
 
 
 	}
@@ -270,6 +284,22 @@ public class ProfileView extends BaseModel{
 			cardNumTextField.setText("" + newCustomer.getPaymentInfo().getCardNum());
 			cardExpDateTextField.setText(newCustomer.getPaymentInfo().getExpiration());
 			securityNumTextField.setText("" + newCustomer.getPaymentInfo().getSecurityCode());
+			for(int i = 0; i < newCustomer.getCoupon().size(); i++){
+				HBox temp = new HBox();
+				Text codeLabel = new Text("Code: ");
+				Text code = new Text();
+				Text amountOffLabel = new Text(" Percent Off: ");
+				Text amountOff = new Text();
+				Button useCoupon = new Button("Use Coupon");
+				code.setText(newCustomer.getCoupon().get(i).getCode());
+				amountOff.setText("" + newCustomer.getCoupon().get(i).getPercentOff() + "%");
+				temp.getChildren().add(codeLabel);
+				temp.getChildren().add(code);
+				temp.getChildren().add(amountOffLabel);
+				temp.getChildren().add(amountOff);
+				temp.getChildren().add(useCoupon);
+				overallBox.getChildren().add(temp);
+			}
 		}
 		if(newUser.getClass() == Restaurant.class){
 			Restaurant newRestaurant = (Restaurant) newUser;
@@ -298,16 +328,18 @@ public class ProfileView extends BaseModel{
             securityNumTextField.setVisible(false);
 
 		}
-		for(int i = 16; i < grid.getChildren().size() - 1; i++){
+		for(int i = 16; i < grid.getChildren().size() - 2; i++){
 			((TextField)grid.getChildren().get(i)).setEditable(false);
 		}
 	}
 
 
 	public void removeAllFromProfile() {
-		for(int i = 16; i < grid.getChildren().size() - 1; i++){
+		for(int i = 16; i < grid.getChildren().size() - 2; i++){
 			((TextField)grid.getChildren().get(i)).setText("");
 		}
+
+		overallBox.getChildren().clear();
 
 		firstNameText.setText("First Name: ");
 		lastNameText.setText("Last Name: ");

@@ -1,4 +1,4 @@
-package org.openjfx;
+
 
 
 import java.util.ArrayList;
@@ -43,11 +43,11 @@ public class CheckoutView extends BaseModel
 	TextField aptNumPoBoxTextField;
 	TextField cityTextField;
 	TextField stateTextField;
-    Text registeredUsersOnlyText;
     TextField cardNumTextField;
     TextField cardExpDateTextField;
     TextField secCodeTextField;
     TextField couponCodeTextField;
+    Text registeredUsersOnlyText;
     Text firstNameText;
     Text lastNameText;
     Text emailText;
@@ -253,16 +253,62 @@ public class CheckoutView extends BaseModel
 
 
     }
-    public void addAllItemsToCart(Order newOrder)
+    public void addAllItemsToCart(Order newOrder, User curUser)
     {
         for(int i = 0; i < newOrder.getOrderContents().size(); i++){
             CheckoutCartItemView temp = new CheckoutCartItemView(newOrder.getOrderContents().get(i), thisXSize, thisYSize);
             cartItemsVBox.getChildren().add(temp);
         }
+        if(curUser.getUserId() > -1){
+            Customer temp = (Customer)curUser;
+            firstNameTextField.setText(temp.getFirstName());
+            lastNameTextField.setText(temp.getLastName());
+            emailTextField.setText(temp.getEmail());
+            phoneNumTextField.setText(temp.getPhoneNum());
+            addressLine1TextField.setText(temp.getAddress().getStreetAddressLine1());
+            addressLine2TextField.setText(temp.getAddress().getStreetAddressLine2());
+            zipCodeTextField.setText(temp.getAddress().getZipcode());
+            aptNumPoBoxTextField.setText(temp.getAddress().getApptNumPOBox());
+            cityTextField.setText(temp.getAddress().getCity());
+            stateTextField.setText(temp.getAddress().getState());
+            cardExpDateTextField.setText(temp.getPaymentInfo().getExpiration());
+            cardNumTextField.setText(temp.getPaymentInfo().getCardNum());
+            secCodeTextField.setText(temp.getPaymentInfo().getSecurityCode());
+
+            firstNameTextField.setEditable(false);
+            lastNameTextField.setEditable(false);
+            emailTextField.setEditable(false);
+            phoneNumTextField.setEditable(false);
+            addressLine1TextField.setEditable(false);
+	        addressLine2TextField.setEditable(false);
+	        zipCodeTextField.setEditable(false);
+	        aptNumPoBoxTextField.setEditable(false);
+	        cityTextField.setEditable(false);
+	        stateTextField.setEditable(false);
+            cardNumTextField.setEditable(false);
+            cardExpDateTextField.setEditable(false);
+            secCodeTextField.setEditable(false);
+            couponCodeTextField.setEditable(false);
+        }
     }
     public void removeAllItems()
     {
         cartItemsVBox.getChildren().clear();
+
+        firstNameTextField.setEditable(true);
+        lastNameTextField.setEditable(true);
+        emailTextField.setEditable(true);
+        phoneNumTextField.setEditable(true);
+        addressLine1TextField.setEditable(true);
+	    addressLine2TextField.setEditable(true);
+	    zipCodeTextField.setEditable(true);
+	    aptNumPoBoxTextField.setEditable(true);
+	    cityTextField.setEditable(true);
+	    stateTextField.setEditable(true);
+        cardNumTextField.setEditable(true);
+        cardExpDateTextField.setEditable(true);
+        secCodeTextField.setEditable(true);
+        couponCodeTextField.setEditable(true);
     }
 
 }

@@ -1,3 +1,5 @@
+
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -27,9 +29,9 @@ public class CouponView extends BaseModel {
 
     VBox aVbox;
 
-    public CouponView (int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo) {
+    public CouponView (int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, String newPWD) {
 
-        super(xSize, ySize, topButtons, newPageTitle, newLogo);
+        super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
 
         searchbar = new TextField("Search");
         goButton = new Button("Go");

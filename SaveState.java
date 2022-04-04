@@ -1,4 +1,4 @@
-package org.openjfx;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,13 +9,15 @@ public class SaveState implements Serializable{
     ArrayList<MenuItem> menuList;
     int nextOrderNumber;
     int currentUserIDToAssign;
+    int currentCouponNum;
 
-    public SaveState(ArrayList<Order> newOrderList, ArrayList<User> newUserList, ArrayList<MenuItem> newMenuList, int newNextOrderNumber, int newCurrentUserIDToAssign){
+    public SaveState(ArrayList<Order> newOrderList, ArrayList<User> newUserList, ArrayList<MenuItem> newMenuList, int newNextOrderNumber, int newCurrentUserIDToAssign, int newCurrentCouponNum){
         this.orderList = newOrderList;
         this.userList = newUserList;
         this.menuList = newMenuList;
         this.nextOrderNumber = newNextOrderNumber;
         this.currentUserIDToAssign = newCurrentUserIDToAssign;
+        this.currentCouponNum = newCurrentCouponNum;
     }
 
     public void setOrderList(ArrayList<Order> newOrderList){
@@ -42,6 +44,10 @@ public class SaveState implements Serializable{
         this.currentUserIDToAssign = newCurrentUserIDToAssign;
         return;
     }
+    public void setCurrentCouponNum(int newCurrentCouponNum){
+        this.currentCouponNum = newCurrentCouponNum;
+        return;
+    }
 
     public ArrayList<Order> getOrderList(){
         
@@ -62,5 +68,9 @@ public class SaveState implements Serializable{
 
     public int getCurrentUserIDtoAssign(){
         return currentUserIDToAssign;
+    }
+
+    public int getCurrentCouponNum(){
+        return currentCouponNum;
     }
 }
