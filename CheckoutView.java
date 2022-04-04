@@ -75,10 +75,14 @@ public class CheckoutView extends BaseModel
     int thisXSize;
     int thisYSize;
 
+    Order item;
+
     ScrollPane itemScroll;
     public CheckoutView(int xSize,int ySize,ArrayList<Button> topButtons, String newPageTitle, Image newLogo, Order newOrder, String newPWD)
     {
         super(xSize, ySize, topButtons, newPageTitle, newLogo, newPWD);
+
+        item = newOrder;
 
         thisXSize = xSize;
         thisYSize = ySize; 

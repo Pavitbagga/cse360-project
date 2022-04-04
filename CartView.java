@@ -32,6 +32,8 @@ public class CartView extends BaseModel
 	int insideXSize;
 	int insideYSize;
 	ScrollPane itemsScroll;
+
+	Order item;
 	
 	public CartView(int xSize, int ySize, ArrayList<Button> topButtons, String newPageTitle, Image newLogo, Order newOrder, String newPWD)
 	{
@@ -39,6 +41,8 @@ public class CartView extends BaseModel
 		
 		insideXSize = xSize;
 		insideYSize = ySize;
+
+		item = newOrder;
 
 		grid = new GridPane();
 

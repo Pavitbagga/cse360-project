@@ -1,6 +1,7 @@
 
 
 
+
 import javafx.event.EventHandler;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,9 +20,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 
-/**
- * This is a basic skeleton to test running classes for now, will alter to make final project properly
- */
+
 public class App extends Application{
 
     int currentUserIDToAssign;
@@ -508,7 +507,7 @@ public class App extends Application{
             int temp = ((MenuItemView)((Button) e.getSource()).getScene()).thisIndex;
             currentOrder.getOrderContents().get(temp).setSize(((MenuItemView)((Button) e.getSource()).getScene()).buttonSelected);
             currentOrder.getOrderContents().get(temp).setQuantity(Integer.parseInt(((MenuItemView)((Button) e.getSource()).getScene()).quantity.getText()));
-            currentOrder.getOrderContents().get(temp).setPrice(currentOrder.getOrderContents().get(temp).getItem().getPrice());
+           
 
             removeAllItemsFromCart(cartView);
             addAllItemsToCart(currentOrder, cartView);
@@ -557,11 +556,19 @@ public class App extends Application{
                 checkOutView.lastNameTextField.setText("Enter Last Name");
                 checkOutView.addressLine1Text.setText("Enter Address Line 1");
                 checkOutView.addressLine2Text.setText("Enter Address Line 2");
+
                 
 
             }
             else{
                 checkOutView.addAllItemsToCart(currentOrder, userList.get(findUserId(currentUserLoggedIn)));
+                checkOutView.couponCodeTextField.setText(currentCoupon);
+                checkOutView.couponCodeTextField.setEditable(false);
+                int off = ((Customer) userList.get(findUserId(currentUserLoggedIn))).getCoupon(checkOutView.couponCodeTextField.getText()).getPercentOff();
+                    if (off > 0){
+                        checkOutView.totalText.setText("Total: $" + (checkOutView.item.getTotalPrice() * (1.0 - (off * 0.01))));
+                    }
+
             }
             
             checkOutView.editCartButton.setOnMouseClicked(cartViewHandler);
@@ -596,6 +603,16 @@ public class App extends Application{
                     temp.addOrderItem(currentOrder.getOrderContents().get(i));
                 }
                 orders.add(temp);
+                if(checkOutView.couponCodeTextField.getText().length() > 0){
+                    int off = ((Customer) userList.get(findUserId(currentUserLoggedIn))).getCoupon(checkOutView.couponCodeTextField.getText()).getPercentOff();
+                    if (off > 0){
+                        for(int i = 0; i < temp.getOrderContents().size(); i++){
+                            temp.getOrderContents().get(i).setPrice((int)(temp.getOrderContents().get(i).getPrice() * (1.0 - (off * 0.01))));
+                            
+                        }
+                    }
+                    ((Customer) userList.get(findUserId(currentUserLoggedIn))).removeCoupon(checkOutView.couponCodeTextField.getText());
+                }
             }
 
             nextOrderNumber++;
@@ -890,9 +907,12 @@ public class App extends Application{
 
     EventHandler<MouseEvent> useCurrentCouponHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent e) {
-            System.out.println("Using a coupon");
+            
 
             currentCoupon = ((Text)((HBox)((Button)e.getSource()).getParent()).getChildren().get(1)).getText();
+
+            System.out.println("Using a coupon " + currentCoupon);
+
 
         }
     };
@@ -925,6 +945,7 @@ public class App extends Application{
 
         currentCoupon = "";
         nextOrderNumber = 2;
+        // Comment Below for reset
         SaveState tempIn = null;
         try{
             FileInputStream fileIn = new FileInputStream(pwd + "tempFile.ser");
@@ -944,24 +965,26 @@ public class App extends Application{
             e4.printStackTrace();
         }
 
+        // End Commenting for reset
+
         guest = new Customer("Guest", "Guest", "guest", "", -1, "", "");
         Address guestAddress = new Address("", "", "", "", "", "");
         guest.setAddress(guestAddress);
         Payment guestPayment = new Payment("", guestAddress, "", "");
         guest.setPaymentInfo(guestPayment);
 
+        // Uncomment for reeset
         // currentCouponNum = 10;
         // orders = new ArrayList<Order>();
-
-        currentOrder = new Order(-2, guest);
-
         // userList = new ArrayList<User>();
-
         // menuList = new ArrayList<MenuItem>();
-        menuItemMiniViewList = new ArrayList<MenuItemMiniView>();
-
         // currentUserIDToAssign = userList.size();
+
+
+
         currentUserLoggedIn = -1;
+        menuItemMiniViewList = new ArrayList<MenuItemMiniView>();
+        currentOrder = new Order(-2, guest);
 
         ArrayList<Button> buttonListHome1 = new ArrayList<Button>();
         loginButton1 = new Button("Login");
@@ -1185,7 +1208,7 @@ public class App extends Application{
         m11.addIngredient("blueberry");
 
         System.out.println("Got to the start here 1");
-
+        // Uncomment for reset
         // menuList.add(m1);
         // menuList.add(m2);
         // menuList.add(m3);
@@ -1198,15 +1221,13 @@ public class App extends Application{
         // menuList.add(m10);
         // menuList.add(m11);
 
+        // End uncomment
+
         OrderItem o1 = new OrderItem(m1,"no strawberries", 1, 1, m1.getPrice());
         OrderItem o2 = new OrderItem(m10,"none",2,2,m10.getPrice());
         Order ethansOrder = new Order(1,ethan);
         ethansOrder.addOrderItem(o1);
         ethansOrder.addOrderItem(o2);
-
-        // System.out.println(o1.toString());
-        // System.out.println(o2.toString());
-
 
         OrderItem o3 = new OrderItem(m3,"none",1,4,m3.getPrice());
         Order johnsOrder = new Order(2, john);
@@ -1220,23 +1241,42 @@ public class App extends Application{
         deansOrder.addOrderItem(o5); 
         deansOrder.addOrderItem(o6);
 
-        // currentOrder = ethansOrder;
 
+        // Uncomment for reset
         // orders.add(deansOrder);
         // orders.add(johnsOrder);
+
+        // End uncomment
+
+
+
         for (int i = 0; i < menuList.size(); i++){
             MenuItemMiniView temp = new MenuItemMiniView(menuList.get(i), 900, 700, pwd);
             menuItemMiniViewList.add(temp);
         }
         
 
-
+        // Uncomment for reset
         // userList.add(ethan);
         // userList.add(john);
         // userList.add(dean);
         // userList.add(todd);
 
+        // Coupon co1 = new Coupon(15, "", "asdf10sadf");
+        // Coupon co2 = new Coupon(15, "", "asdf11sadf");
+        // Coupon co3 = new Coupon(15, "", "asdf12sadf");
+        // Coupon co4 = new Coupon(15, "", "asdf13sadf");
+
+        // currentCouponNum = 14;
+
+        // ethan.setCoupon(co1);
+        // ethan.setCoupon(co2);
+        // ethan.setCoupon(co3);
+        // ethan.setCoupon(co4);
+
         // currentUserIDToAssign = 4;
+
+        // End uncomment
         
         try {
 

@@ -284,15 +284,15 @@ public class ProfileView extends BaseModel{
 			cardNumTextField.setText("" + newCustomer.getPaymentInfo().getCardNum());
 			cardExpDateTextField.setText(newCustomer.getPaymentInfo().getExpiration());
 			securityNumTextField.setText("" + newCustomer.getPaymentInfo().getSecurityCode());
-			for(int i = 0; i < newCustomer.getCoupon().size(); i++){
+			for(int i = 0; i < newCustomer.getCouponList().size(); i++){
 				HBox temp = new HBox();
 				Text codeLabel = new Text("Code: ");
 				Text code = new Text();
 				Text amountOffLabel = new Text(" Percent Off: ");
 				Text amountOff = new Text();
 				Button useCoupon = new Button("Use Coupon");
-				code.setText(newCustomer.getCoupon().get(i).getCode());
-				amountOff.setText("" + newCustomer.getCoupon().get(i).getPercentOff() + "%");
+				code.setText(newCustomer.getCouponList().get(i).getCode());
+				amountOff.setText("" + newCustomer.getCouponList().get(i).getPercentOff() + "%");
 				temp.getChildren().add(codeLabel);
 				temp.getChildren().add(code);
 				temp.getChildren().add(amountOffLabel);

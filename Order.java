@@ -19,6 +19,11 @@ public class Order implements Serializable {
         this.orderer = orderer;
     }
 
+    public void setTotalPrice(int newPrice){
+        totalPrice = newPrice;
+        return;
+    }
+
     public boolean setCancelled(boolean newStatus) {
         this.cancelled = newStatus;
         return true;
@@ -71,6 +76,10 @@ public class Order implements Serializable {
     }
 
     public int getTotalPrice() {
+        totalPrice = 0;
+        for(int i = 0; i < getPricePerItem().size(); i++){
+            totalPrice += getPricePerItem().get(i);
+        }
         return totalPrice;
     }
 

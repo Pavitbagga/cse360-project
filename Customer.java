@@ -1,4 +1,3 @@
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -57,8 +56,27 @@ public class Customer extends User  implements Serializable{
         return true;
     }
 
-    public ArrayList<Coupon> getCoupon() {
+    public Coupon getCoupon(String newCode) {
+        for(int i = 0; i < couponList.size(); i++){
+            if(couponList.get(i).getCode().equals(newCode)){
+                return couponList.get(i);
+            }
+        }
+        return new Coupon(-1, "-1", "-1");
+    }
+
+    public boolean removeCoupon(String newCode){
+        for(int i = 0; i < couponList.size(); i++){
+            if(couponList.get(i).getCode().equals(newCode)){
+                couponList.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Coupon> getCouponList(){
         return couponList;
     }
-}
 
+}
