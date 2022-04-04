@@ -15,8 +15,8 @@ public class MenuView extends BaseModel{
     VBox menuItems = new VBox();
     HBox searchButtons = new HBox();
     HBox searchBar = new HBox();
-    TextField search = new TextField();
-    Button searchEnter = new Button("search");
+    // TextField search = new TextField();
+    // Button searchEnter = new Button("search");
     GridPane contentView;
     ScrollPane scroll;
     int localXsize;
@@ -73,9 +73,9 @@ public class MenuView extends BaseModel{
         // contentView.getRowConstraints().addAll(rows);
         // contentView.getColumnConstraints().addAll(columns);
 
-        contentView.add(search,1,0);
-        contentView.add(searchEnter,2,0);
-        contentView.add(scroll, 1, 1, 3, 1);
+        // contentView.add(search,1,0);
+        // contentView.add(searchEnter,2,0);
+        // contentView.add(scroll, 1, 1, 3, 1);
 
         scroll.setContent(menuItems);
 
@@ -96,7 +96,7 @@ public class MenuView extends BaseModel{
 
         // contentView.setGridLinesVisible(true);
 
-        this.mainView.add(contentView, 0, 1);
+        this.mainView.add(scroll, 0, 1);
     }
 
     public void addAll(ArrayList<MenuItemMiniView> menuList){

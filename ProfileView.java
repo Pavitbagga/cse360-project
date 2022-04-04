@@ -213,7 +213,6 @@ public class ProfileView extends BaseModel{
 		grid.getRowConstraints().add(r17);
 
 		// System.out.println("Gets to Here 2");
-
 		grid.add(firstNameText, 0, 1);
 		grid.add(lastNameText, 0, 2);
 		grid.add(userNameText, 0, 3);
@@ -232,7 +231,6 @@ public class ProfileView extends BaseModel{
 		grid.add(saveChanges, 0, 16);
 
 		// System.out.println("Gets to Here 3");
-
 		grid.add(firstNameTextField, 1, 1);
 		grid.add(lastNameTextField, 1, 2);
 		grid.add(userNameTextField, 1, 3);

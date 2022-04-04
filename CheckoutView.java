@@ -326,6 +326,8 @@ public class CheckoutView extends BaseModel
         cardExpDateTextField.setText("");
         cardNumTextField.setText("");
         secCodeTextField.setText("");
+
+        totalText.setText("Total: ");
     }
 
 }

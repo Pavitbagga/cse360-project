@@ -247,6 +247,8 @@ public class App extends Application{
             }
             else{
                 profileView.addAllFieldsToProfile(userList.get(findUserId(currentUserLoggedIn)));
+                profileView.saveChanges.setVisible(true);
+                profileView.editAccountInfo.setVisible(true);
                 for(int i = 0; i < profileView.overallBox.getChildren().size(); i++){
                     ((Button)((HBox)profileView.overallBox.getChildren().get(i)).getChildren().get(4)).setOnMouseClicked(useCurrentCouponHandler);
                 }
@@ -557,7 +559,7 @@ public class App extends Application{
                 checkOutView.lastNameTextField.setText("Enter Last Name");
                 checkOutView.addressLine1Text.setText("Enter Address Line 1");
                 checkOutView.addressLine2Text.setText("Enter Address Line 2");
-
+                checkOutView.totalText.setText("Total: $" + (checkOutView.item.getTotalPrice()));
                 
 
             }
@@ -569,7 +571,10 @@ public class App extends Application{
                     if (off > 0){
                         checkOutView.totalText.setText("Total: $" + (checkOutView.item.getTotalPrice() * (1.0 - (off * 0.01))));
                     }
-
+                    else{
+                        checkOutView.totalText.setText("Total: $" + (checkOutView.item.getTotalPrice()));
+                    }
+                
             }
             
             checkOutView.editCartButton.setOnMouseClicked(cartViewHandler);
@@ -596,6 +601,12 @@ public class App extends Application{
                 }
 
                 orders.add(temp);
+                waitView.numberOrders.setText("" + findOrder(temp));
+                int waitTime = 0;
+                for(int i = 0; i < findOrder(temp); i++){
+                    waitTime += orders.get(i).getWaitTime();
+                }
+                waitView.readyTime.setText("" + waitTime);
 
             }
             else{
@@ -613,13 +624,22 @@ public class App extends Application{
                         }
                     }
                     ((Customer) userList.get(findUserId(currentUserLoggedIn))).removeCoupon(checkOutView.couponCodeTextField.getText());
+                    
+                    
                 }
+                waitView.numberOrders.setText("" + findOrder(temp));
+                int waitTime = 0;
+                for(int i = 0; i < findOrder(temp); i++){
+                    waitTime += orders.get(i).getWaitTime();
+                }
+                waitView.readyTime.setText("" + waitTime);
             }
 
             nextOrderNumber++;
 
-            waitView.readyTime.setText("15");
-            waitView.numberOrders.setText("2");
+            
+            // waitView.readyTime.setText("15");
+            // waitView.numberOrders.setText("2");
 
             stage.setScene(waitView);
             stage.show();
@@ -1548,96 +1568,5 @@ public class App extends Application{
 
 
 
-    // public void printBtns(ArrayList<Button> list) {
-    //     for (int i = 0; i < list.size(); i++) {
-    //         System.out.println(list.get(i).getText());
-    //     }
-    // }
-    // public void printVBox(VBox v) {
-    //     for (int i = 0; i < v.getChildren().size(); i++) {
-    //         Button temp = (Button) v.getChildren().get(i);
-    //         System.out.println(temp.getText());
-    //     }
-    // }
-
-    // public int findOrderNum(int num) {
-    //     for(int i = 0; i < orders.size(); i++) {
-    //         if(orders.get(i).orderNum == num) {
-    //             return i;
-    //         }
-    //     }
-    //     return -1;
-    // }
-    // EventHandler<MouseEvent> delOrder = new EventHandler<MouseEvent>() {
-    //     public void handle(MouseEvent e) {
-    //         Button source = (Button) e.getSource();
-    //         GridPane parOrderNode = (GridPane) source.getParent();
-    //         VBox parVBox = (VBox) parOrderNode.getParent();
-    //         parVBox.getChildren().remove(parOrderNode);
-    //         try {
-    //         orders.remove(findOrderNum(Integer.parseInt(((Text) parOrderNode.getChildren().get(0)).getText())));
-    //         }
-    //         catch (Exception ex) {
-    //             System.out.println("There was an Exception (Probably this does not exist");
-    //         }
-
-
-    //     }
-    // };
-
-    // EventHandler<MouseEvent> toMenuItem = new EventHandler<MouseEvent>() {
-    //     public void handle(MouseEvent e) {
-    //         Button t1 = ((Button) e.getSource());
-    //         HBox t2 = ((HBox) t1.getParent());
-    //         Button b1 = new Button("Return to Menu");
-    //         b1.setOnMouseClicked(toMenuPage);
-    //         ArrayList<Button> b1list = new ArrayList<Button>();
-    //         b1list.add(b1);
-    //         MenuItem m = new MenuItem(((Text)t2.getChildren().get(1)).getText(), ((Text)t2.getChildren().get(0)).getText(), Integer.parseInt(((Text)t2.getChildren().get(3)).getText()), ((Text)t2.getChildren().get(2)).getText());
-    //         MenuItemView t3 = new MenuItemView(stage, 320, 240, b1list, m);
-    //         System.out.println("the button for order "+ m.name + "Was pressed");
-    //         stage.setScene(t3);
-    //         stage.show();
-
-
-    //     }
-    // };
-
-    // EventHandler<MouseEvent> toMenuPage = new EventHandler<MouseEvent>() {
-    //     public void handle(MouseEvent e) {
-    //         menu.removeAll();
-    //         menu.addAllMenuItems(menuList);
-    //         VBox par1 = ((VBox)menu.mainView.getChildren().get(1));
-    //         System.out.println("The Value of the VBOx is " + ((Text)(par1.getChildren().get(0))).getText());
-
-    //         for(int i = 1; i < par1.getChildren().size(); i++) {  
-    //             HBox par2 = (HBox)par1.getChildren().get(i);
-    //             Button par3 = (Button)par2.getChildren().get(4);
-    //             System.out.println("The value of the button is " + par3.getText());
-    //             par3.setOnMouseClicked(toMenuItem);
-                
-
-    //         }
-
-    //         stage.setScene(menu);
-    //         stage.show();
-    //     }
-    // };
-
-    // EventHandler<MouseEvent> toOrders = new EventHandler<MouseEvent>() {
-    //     public void handle(MouseEvent e) {
-    //         System.out.println("This is " + ordersView.pageTitle.getText());
-    //         printBtns(ordersView.topButtons);
-    //         System.out.println("This is the VBox for " + ordersView.pageTitle.getText());
-    //         printVBox(ordersView.topButtonHolder);
-    //         ordersView.ordersBox.getChildren().clear();
-    //         ordersView.addAllOrders(orders);
-    //         for(int i = 0; i < ordersView.ordersBox.getChildren().size(); i++) {
-    //             ((Button)((GridPane)ordersView.ordersBox.getChildren().get(i)).getChildren().get(1)).setOnMouseClicked(delOrder);
-    //         }
-    //         stage.setScene(ordersView);
-    //         stage.show();
-    //     }
-    // };
 
 }
