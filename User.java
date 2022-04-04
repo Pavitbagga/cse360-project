@@ -3,7 +3,6 @@
 // Basic storage class for saving user
 
 
-
 import java.io.Serializable;
 
 public class User  implements Serializable{

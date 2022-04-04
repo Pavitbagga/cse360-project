@@ -1,6 +1,5 @@
 
 
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -99,6 +98,10 @@ class MenuItem implements Serializable{
     }
     public Integer getCategory(){
         return category;
+    }
+
+    public void setIngredientsArray(ArrayList<String> newList){
+        this.ingredient = newList;
     }
 
 }

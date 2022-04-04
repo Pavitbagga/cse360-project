@@ -2,7 +2,6 @@
 // Last modified 3/12/22
 // Basic storage class for saving addresses
 
-
 import java.io.Serializable;
 
 public class Address implements Serializable {

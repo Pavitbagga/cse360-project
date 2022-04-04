@@ -1,6 +1,5 @@
 
 
-
 import java.util.ArrayList;
 
 import javafx.geometry.HPos;
@@ -47,7 +46,7 @@ public class CheckoutView extends BaseModel
     TextField cardExpDateTextField;
     TextField secCodeTextField;
     TextField couponCodeTextField;
-    Text registeredUsersOnlyText;
+    // Text registeredUsersOnlyText;
     Text firstNameText;
     Text lastNameText;
     Text emailText;
@@ -64,7 +63,7 @@ public class CheckoutView extends BaseModel
     Text couponCodeText;
     HBox buttonBox;
     GridPane separationGrid;
-    CheckBox check;
+    // CheckBox check;
     Text useSaveCardInfoText;
     Text itemsList;
     Text totalText;
@@ -107,7 +106,7 @@ public class CheckoutView extends BaseModel
         emailTextField = new TextField();
         phoneNumTextField = new TextField();
 
-        registeredUsersOnlyText = new Text("For Registered Users only: ");
+        // registeredUsersOnlyText = new Text("For Registered Users only: ");
         useSaveCardInfoText = new Text("Use saved card info");
         firstNameText = new Text("First Name: ");
         lastNameText = new Text("Last Name: ");
@@ -136,7 +135,7 @@ public class CheckoutView extends BaseModel
 		cityTextField = new TextField();
 		stateTextField = new TextField();
         // couponCodeTextField.setMaxSize(200 , 200);
-        check = new CheckBox();
+        // check = new CheckBox();
         totalText = new Text("Total: $");
         totalText.setFont(Font.font("Arial",FontWeight.SEMI_BOLD,20));
 
@@ -167,7 +166,7 @@ public class CheckoutView extends BaseModel
         // checkOutGridPane.setGridLinesVisible(true);
 
         paymentInfoGridPane.add(paymentInfoText, 0, 0);
-        paymentInfoGridPane.add(registeredUsersOnlyText, 0, 1);
+        // paymentInfoGridPane.add(registeredUsersOnlyText, 0, 1);
         paymentInfoGridPane.add(cardNumText, 0, 4);
         paymentInfoGridPane.add(cardNumTextField, 1, 4);
         paymentInfoGridPane.add(cardExpDateText, 0, 5);
@@ -176,8 +175,8 @@ public class CheckoutView extends BaseModel
         paymentInfoGridPane.add(secCodeTextField, 1, 6);
         paymentInfoGridPane.add(useSaveCardInfoText, 1, 2);
         // paymentInfoGridPane.setHalignment(check, HPos.RIGHT);
-        paymentInfoGridPane.add(check, 0, 2);
-        check.setAlignment(Pos.CENTER_RIGHT);
+        // paymentInfoGridPane.add(check, 0, 2);
+        // check.setAlignment(Pos.CENTER_RIGHT);
         paymentInfoGridPane.setAlignment(Pos.TOP_LEFT);
         // paymentInfoGridPane.setGridLinesVisible(true);
 
@@ -313,6 +312,20 @@ public class CheckoutView extends BaseModel
         cardExpDateTextField.setEditable(true);
         secCodeTextField.setEditable(true);
         couponCodeTextField.setEditable(true);
+
+        firstNameTextField.setText("");
+        lastNameTextField.setText("");
+        emailTextField.setText("");
+        phoneNumTextField.setText("");
+        addressLine1TextField.setText("");
+        addressLine2TextField.setText("");
+        zipCodeTextField.setText("");
+        aptNumPoBoxTextField.setText("");
+        cityTextField.setText("");
+        stateTextField.setText("");
+        cardExpDateTextField.setText("");
+        cardNumTextField.setText("");
+        secCodeTextField.setText("");
     }
 
 }

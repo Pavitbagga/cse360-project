@@ -1,5 +1,4 @@
 
-
 public class Restaurant extends User{
     String restaurantName;
     int permissions;

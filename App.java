@@ -1,14 +1,15 @@
 
 
 
-
 import javafx.event.EventHandler;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import javafx.scene.input.MouseEvent;
@@ -691,6 +692,11 @@ public class App extends Application{
                 editItemView.newPriceTextField.setText("" + editItemView.item.getPrice());
                 editItemView.selectedCategory = editItemView.item.getCategory();
                 editItemView.foodTagsTextField.setText(editItemView.item.getPicture().getUrl());
+                String tempIng = "";
+                for(int i = 0; i < editItemView.item.getIngredients().size(); i++){
+                    tempIng += editItemView.item.getIngredients().get(i) + "\n";
+                }
+                editItemView.ingredientListTextArea.setText(tempIng);
                 
                 if(editItemView.selectedCategory == 0){
                     editItemView.cakeRadioButton.setStyle("-fx-background-color: #00FF00");
@@ -749,6 +755,7 @@ public class App extends Application{
             editItemView.searchGoButton.setVisible(true);
             editItemView.createItemButton.setText("Create Item");
             
+            
         }
     };
     EventHandler<MouseEvent> createNewItemButtonHandler = new EventHandler<MouseEvent>() {
@@ -790,6 +797,10 @@ public class App extends Application{
                     menuList.get(tempIndex).setPrice(Integer.parseInt(editItemView.newPriceTextField.getText()));
                     menuList.get(tempIndex).setPrepTime(Integer.parseInt(editItemView.prepTimeTextField.getText()));
                     menuList.get(tempIndex).setCategory(editItemView.selectedCategory);
+                    String lines[] = editItemView.ingredientListTextArea.getText().split("\\r?\\n");
+                    ArrayList<String> tempString =  new ArrayList<String>(Arrays.asList(lines));
+                    menuList.get(tempIndex).setIngredientsArray(tempString);
+
                     for(int i = 0; i < menuItemMiniViewList.size(); i++){
                         if(menuItemMiniViewList.get(i).innerMenuItem == menuList.get(tempIndex)){
                             menuItemMiniViewList.get(i).menuName.setText(editItemView.foodItemNewName.getText());
@@ -798,11 +809,11 @@ public class App extends Application{
                                 Image menuImg = new Image(in);
                                 menuItemMiniViewList.get(i).menuImage.setImage(menuImg);
                                 menuList.get(tempIndex).getPicture().setUrl(editItemView.foodTagsTextField.getText());
-                                editItemView.ingredientListTextField.setText("Picture Succesful");
+                                editItemView.ingredientListTextArea.setText("Picture Succesful");
                             }
                             catch(Exception e2){
                                 System.out.println(e2.toString());
-                                editItemView.ingredientListTextField.setText("Please Try Again");
+                                editItemView.ingredientListTextArea.setText("Please Try Again");
                             }
                         }
                     }
@@ -812,6 +823,10 @@ public class App extends Application{
             }
             else if (editItemView.selectedMode == 1){
                 MenuItem temp = new MenuItem(editItemView.foodItemNewName.getText(), new Picture(editItemView.foodTagsTextField.getText(), ""), Integer.parseInt(editItemView.newPriceTextField.getText()), Integer.parseInt(editItemView.prepTimeTextField.getText()), editItemView.selectedCategory);
+
+                String lines[] = editItemView.ingredientListTextArea.getText().split("\\r?\\n");
+                ArrayList<String> tempString =  new ArrayList<String>(Arrays.asList(lines));
+                temp.setIngredientsArray(tempString);
 
                 menuList.add(temp);
                 MenuItemMiniView temp2 = new MenuItemMiniView(temp, 900, 700, pwd);
@@ -946,6 +961,7 @@ public class App extends Application{
         currentCoupon = "";
         nextOrderNumber = 2;
         // Comment Below for reset
+        
         SaveState tempIn = null;
         try{
             FileInputStream fileIn = new FileInputStream(pwd + "tempFile.ser");
@@ -974,11 +990,14 @@ public class App extends Application{
         guest.setPaymentInfo(guestPayment);
 
         // Uncomment for reeset
+
         // currentCouponNum = 10;
         // orders = new ArrayList<Order>();
         // userList = new ArrayList<User>();
         // menuList = new ArrayList<MenuItem>();
         // currentUserIDToAssign = userList.size();
+
+        // end uncomment
 
 
 
@@ -989,13 +1008,13 @@ public class App extends Application{
         ArrayList<Button> buttonListHome1 = new ArrayList<Button>();
         loginButton1 = new Button("Login");
         createAccountButton1 = new Button("Create Account");
-        Button printUsersButton = new Button("Print Users");
-        printUsersButton.setOnMouseClicked(printUsersHandler);
+        // Button printUsersButton = new Button("Print Users");
+        // printUsersButton.setOnMouseClicked(printUsersHandler);
         loginButton1.setOnMouseClicked(loginButtonHandler);
         createAccountButton1.setOnMouseClicked(createAccountButtonHandler);
         buttonListHome1.add(loginButton1);
         buttonListHome1.add(createAccountButton1);
-        buttonListHome1.add(printUsersButton);
+        // buttonListHome1.add(printUsersButton);
 
 
         ArrayList<Button> buttonListMenu2 = new ArrayList<Button>();
@@ -1020,7 +1039,7 @@ public class App extends Application{
 
 
         ArrayList<Button> buttonListNewProfile5 = new ArrayList<Button>();
-        logout5 = new Button("Return to Menu 5");
+        logout5 = new Button("Return to Home");
         logout5.setOnMouseClicked(logoutHandler);
         buttonListNewProfile5.add(logout5);
 
@@ -1209,6 +1228,7 @@ public class App extends Application{
 
         System.out.println("Got to the start here 1");
         // Uncomment for reset
+
         // menuList.add(m1);
         // menuList.add(m2);
         // menuList.add(m3);
@@ -1242,7 +1262,9 @@ public class App extends Application{
         deansOrder.addOrderItem(o6);
 
 
+       
         // Uncomment for reset
+
         // orders.add(deansOrder);
         // orders.add(johnsOrder);
 
@@ -1257,6 +1279,7 @@ public class App extends Application{
         
 
         // Uncomment for reset
+
         // userList.add(ethan);
         // userList.add(john);
         // userList.add(dean);

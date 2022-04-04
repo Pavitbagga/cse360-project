@@ -1,11 +1,11 @@
 
 
-
 import java.util.ArrayList;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -28,7 +28,7 @@ public class EditItemView extends BaseModel {
     Text foodItemNameText;
     TextField foodItemNewName;
     Text ingredientListText;
-    TextField ingredientListTextField;
+    TextArea ingredientListTextArea;
     Text foodTagsText;
     TextField foodTagsTextField;
     Text priceText;
@@ -86,7 +86,7 @@ public class EditItemView extends BaseModel {
         foodItemNameText = new Text();
         foodItemNewName = new TextField();
         ingredientListText = new Text();
-        ingredientListTextField = new TextField();
+        ingredientListTextArea = new TextArea();
         foodTagsText = new Text();
         foodTagsTextField = new TextField();
         priceText = new Text();
@@ -135,7 +135,7 @@ public class EditItemView extends BaseModel {
         searchGoHBox.getChildren().addAll(searchBar,searchGoButton);
         radioButtonsHBox.getChildren().addAll(cakeRadioButton,iceCreamRadioButton,smoothieRadioButton);
         foodItemNameHBox.getChildren().addAll(foodItemNameText,foodItemNewName);
-        ingredientsListHBox.getChildren().addAll(ingredientListText,ingredientListTextField);
+        ingredientsListHBox.getChildren().addAll(ingredientListText,ingredientListTextArea);
         foodTagsListHbox.getChildren().addAll(foodTagsText,foodTagsTextField);
 
         cakeRadioButton.setStyle("-fx-background-color: #00FF00");
@@ -166,7 +166,7 @@ public class EditItemView extends BaseModel {
         foodTagsTextField.setText("");
         searchBar.setText("");
         foodItemNewName.setText("");
-        ingredientListTextField.setText("");
+        ingredientListTextArea.setText("");
         foodTagsTextField.setText("");
         newPriceTextField.setText("");
         prepTimeTextField.setText("");
@@ -174,7 +174,7 @@ public class EditItemView extends BaseModel {
         foodTagsTextField.setEditable(true);
         searchBar.setEditable(true);
         foodItemNewName.setEditable(true);
-        ingredientListTextField.setEditable(true);
+        ingredientListTextArea.setEditable(true);
         foodTagsTextField.setEditable(true);
         newPriceTextField.setEditable(true);
         prepTimeTextField.setEditable(true);

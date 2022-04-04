@@ -1,3 +1,4 @@
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -80,3 +81,4 @@ public class Customer extends User  implements Serializable{
     }
 
 }
+
